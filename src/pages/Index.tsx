@@ -3,6 +3,7 @@ import Hero from "@/components/Hero";
 import About from "@/components/About";
 import MenuPreview from "@/components/MenuPreview";
 import Specials from "@/components/Specials";
+import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
 const Index = () => {
@@ -13,6 +14,7 @@ const Index = () => {
       <About />
       <MenuPreview />
       <Specials />
+      <Contact />
       <Footer />
     </div>
   );
