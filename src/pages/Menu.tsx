@@ -2,7 +2,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { motion } from "framer-motion";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const Menu = () => {
   const menuSections = [
@@ -115,100 +115,97 @@ const Menu = () => {
 
       {/* Header */}
       <section className="pt-32 pb-16 px-4 bg-primary text-primary-foreground">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="container mx-auto max-w-4xl text-center"
-        >
+        <div className="container mx-auto max-w-4xl text-center animate-fade-in">
           <h1 className="font-serif text-6xl md:text-7xl font-light mb-6">Unsere Karte</h1>
           <div className="w-24 h-0.5 bg-primary-foreground mx-auto mb-8" />
           <p className="font-sans text-lg leading-relaxed max-w-2xl mx-auto">
             Von traditionellem Frühstück bis zum stilvollen Aperitivo – genießen Sie unsere
             vielfältige Auswahl mit höchster Qualität
           </p>
-        </motion.div>
+        </div>
       </section>
 
       {/* Menu Sections */}
       <section className="py-16 px-4">
         <div className="container mx-auto max-w-4xl space-y-16">
-          {menuSections.map((section, sectionIndex) => (
-            <motion.div 
-              key={section.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6, delay: sectionIndex * 0.1 }}
-            >
-              <h2 className="font-serif text-4xl md:text-5xl text-foreground mb-8 text-center">
-                {section.title}
-              </h2>
-              <div className="space-y-6">
-                {section.items.map((item, itemIndex) => (
-                  <motion.div
-                    key={item.name}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.4, delay: itemIndex * 0.05 }}
-                  >
-                    <Card className="p-6 bg-card hover:shadow-md transition-shadow">
-                      <div className="flex justify-between items-start gap-4">
-                        <div className="flex-1">
-                          <h3 className="font-serif text-xl md:text-2xl text-foreground mb-2">
-                            {item.name}
-                          </h3>
-                          <p className="font-sans text-sm text-muted-foreground leading-relaxed">
-                            {item.description}
-                          </p>
-                        </div>
-                        <div className="font-sans font-medium text-foreground whitespace-nowrap">
-                          €{item.price}
-                        </div>
+          {menuSections.map((section, sectionIndex) => {
+            const SectionWrapper = () => {
+              const { ref, isVisible } = useScrollAnimation(0.1);
+              
+              return (
+                <div ref={ref} key={section.title}>
+                  <h2 className={`font-serif text-4xl md:text-5xl text-foreground mb-8 text-center animate-fade-up ${isVisible ? 'visible' : ''}`}>
+                    {section.title}
+                  </h2>
+                  <div className="space-y-6">
+                    {section.items.map((item, itemIndex) => (
+                      <div
+                        key={item.name}
+                        className={`animate-slide-in ${isVisible ? 'visible' : ''}`}
+                        style={{ animationDelay: `${itemIndex * 0.05}s` }}
+                      >
+                        <Card className="p-6 bg-card hover:shadow-md transition-shadow">
+                          <div className="flex justify-between items-start gap-4">
+                            <div className="flex-1">
+                              <h3 className="font-serif text-xl md:text-2xl text-foreground mb-2">
+                                {item.name}
+                              </h3>
+                              <p className="font-sans text-sm text-muted-foreground leading-relaxed">
+                                {item.description}
+                              </p>
+                            </div>
+                            <div className="font-sans font-medium text-foreground whitespace-nowrap">
+                              €{item.price}
+                            </div>
+                          </div>
+                        </Card>
                       </div>
-                    </Card>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          ))}
+                    ))}
+                  </div>
+                </div>
+              );
+            };
+            
+            return <SectionWrapper key={sectionIndex} />;
+          })}
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 px-4 bg-secondary/30">
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="container mx-auto max-w-2xl text-center"
-        >
-          <h2 className="font-serif text-3xl md:text-4xl text-foreground mb-6">
-            Reservieren Sie Ihren Tisch
-          </h2>
-          <p className="font-sans text-muted-foreground mb-8">
-            Sichern Sie sich Ihren Platz für ein unvergessliches kulinarisches Erlebnis
-          </p>
-          <Button
-            asChild
-            size="lg"
-            className="bg-primary text-primary-foreground hover:bg-accent font-sans tracking-wide"
-          >
-            <a
-              href="https://www.opentable.de/restref/client/?rid=445905"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              JETZT RESERVIEREN
-            </a>
-          </Button>
-        </motion.div>
-      </section>
+      <CTASection />
 
       <Footer />
     </div>
+  );
+};
+
+const CTASection = () => {
+  const { ref, isVisible } = useScrollAnimation(0.1);
+  
+  return (
+    <section ref={ref} className="py-16 px-4 bg-secondary/30">
+      <div className={`container mx-auto max-w-2xl text-center animate-fade-up ${isVisible ? 'visible' : ''}`}>
+        <h2 className="font-serif text-3xl md:text-4xl text-foreground mb-6">
+          Reservieren Sie Ihren Tisch
+        </h2>
+        <p className="font-sans text-muted-foreground mb-8">
+          Sichern Sie sich Ihren Platz für ein unvergessliches kulinarisches Erlebnis
+        </p>
+        <Button
+          asChild
+          size="lg"
+          className="bg-primary text-primary-foreground hover:bg-accent font-sans tracking-wide"
+        >
+          <a
+            href="https://www.opentable.de/restref/client/?rid=445905"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            JETZT RESERVIEREN
+          </a>
+        </Button>
+      </div>
+    </section>
   );
 };
 
