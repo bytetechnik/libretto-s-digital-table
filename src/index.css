@@ -8,26 +8,26 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Libretto Brand Colors */
+    /* Libretto Brand Colors - Using exact logo green #122e20 */
     --background: 28 25% 92%; /* Beige background */
-    --foreground: 146 35% 12%; /* Dark green text */
+    --foreground: 150 44% 13%; /* Logo green text */
 
     --card: 28 25% 95%;
-    --card-foreground: 146 35% 12%;
+    --card-foreground: 150 44% 13%;
 
     --popover: 28 25% 95%;
-    --popover-foreground: 146 35% 12%;
+    --popover-foreground: 150 44% 13%;
 
-    --primary: 146 35% 12%; /* Dark green #182a1e */
-    --primary-foreground: 28 25% 92%; /* Beige text on dark green */
+    --primary: 150 44% 13%; /* Logo green #122e20 */
+    --primary-foreground: 28 25% 92%; /* Beige text on green */
 
     --secondary: 28 25% 88%; /* Darker beige */
-    --secondary-foreground: 146 35% 12%;
+    --secondary-foreground: 150 44% 13%;
 
     --muted: 28 20% 85%;
-    --muted-foreground: 146 20% 35%;
+    --muted-foreground: 150 35% 30%;
 
-    --accent: 146 35% 18%; /* Lighter dark green */
+    --accent: 150 44% 20%; /* Lighter logo green */
     --accent-foreground: 28 25% 92%;
 
     --destructive: 0 84.2% 60.2%;
@@ -35,15 +35,15 @@ All colors MUST be HSL.
 
     --border: 28 15% 80%;
     --input: 28 15% 85%;
-    --ring: 146 35% 12%;
+    --ring: 150 44% 13%;
 
     --radius: 0.5rem;
 
     /* Custom tokens for Libretto */
-    --brand-green: 146 35% 12%;
+    --brand-green: 150 44% 13%;
     --brand-beige: 28 25% 92%;
     --brand-beige-dark: 28 25% 85%;
-    --hero-gradient: linear-gradient(135deg, hsl(146, 35%, 12%) 0%, hsl(146, 30%, 18%) 100%);
+    --hero-gradient: linear-gradient(135deg, hsl(150, 44%, 13%) 0%, hsl(150, 44%, 20%) 100%);
   }
 }
 
