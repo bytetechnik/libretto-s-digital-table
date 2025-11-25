@@ -1,13 +1,11 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
-import { useRef } from "react";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const MenuPreview = () => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const { ref, isVisible } = useScrollAnimation(0.1);
+
   const categories = [
     {
       title: "Frühstück & Brunch",
@@ -30,12 +28,7 @@ const MenuPreview = () => {
   return (
     <section ref={ref} className="py-24 px-4 bg-secondary/30">
       <div className="container mx-auto max-w-6xl">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
+        <div className={`text-center mb-16 animate-fade-up ${isVisible ? 'visible' : ''}`}>
           <h2 className="font-serif text-5xl md:text-6xl font-light text-foreground mb-6">
             Unsere Karte
           </h2>
@@ -44,30 +37,23 @@ const MenuPreview = () => {
             Von traditionellem Frühstück bis zum stilvollen Aperitivo – entdecken Sie unsere
             vielfältige Auswahl
           </p>
-        </motion.div>
+        </div>
 
         <div className="grid md:grid-cols-2 gap-6 mb-12">
           {categories.map((category, index) => (
-            <motion.div
+            <div
               key={category.title}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
+              className={`animate-fade-up ${isVisible ? `visible stagger-${index + 1}` : ''}`}
             >
               <Card className="p-8 hover:shadow-lg transition-shadow bg-card border-border h-full">
                 <h3 className="font-serif text-2xl text-foreground mb-3">{category.title}</h3>
                 <p className="text-muted-foreground font-sans text-sm">{category.description}</p>
               </Card>
-            </motion.div>
+            </div>
           ))}
         </div>
 
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="text-center space-y-4"
-        >
+        <div className={`text-center space-y-4 animate-fade-up ${isVisible ? 'visible stagger-5' : ''}`}>
           <Button
             asChild
             size="lg"
@@ -84,7 +70,7 @@ const MenuPreview = () => {
               <a href="#specials">Zu den Tages-Specials</a>
             </Button>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
