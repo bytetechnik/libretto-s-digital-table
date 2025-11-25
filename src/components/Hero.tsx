@@ -5,7 +5,7 @@ const Hero = () => {
   return (
     <section className="relative h-screen flex items-center justify-center overflow-hidden">
       <div
-        className="absolute inset-0 bg-cover bg-center"
+        className="absolute inset-0 bg-cover bg-center animate-hero-zoom"
         style={{ backgroundImage: `url(${heroImage})` }}
       >
         <div className="absolute inset-0 bg-primary/40" />
