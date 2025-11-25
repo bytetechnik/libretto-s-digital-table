@@ -8,7 +8,7 @@ const Footer = () => {
         <div className="grid md:grid-cols-3 gap-12">
           {/* Logo and Description */}
           <div>
-            <img src={logo} alt="Libretto Logo" className="h-16 w-auto mb-4 brightness-0 invert" />
+            <img src={logo} alt="Libretto Logo" className="h-16 w-auto mb-4 bg-primary-foreground/10 p-2 rounded" />
             <p className="font-sans text-sm leading-relaxed opacity-90">
               Seit 2007 Ihr Ort für Genuss in Frankfurt. Qualität und Gastfreundschaft seit über
               einem Jahrzehnt.

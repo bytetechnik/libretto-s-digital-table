@@ -8,33 +8,33 @@ const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 w-full bg-background/95 backdrop-blur-sm z-50 border-b border-border">
+    <nav className="fixed top-0 w-full bg-primary/95 backdrop-blur-sm z-50 border-b border-primary/20">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           <Link to="/" className="flex items-center">
-            <img src={logo} alt="Libretto Logo" className="h-12 w-auto" />
+            <img src={logo} alt="Libretto Logo" className="h-12 w-auto brightness-0 invert" />
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link to="/" className="text-foreground hover:text-primary transition-colors font-sans text-sm tracking-wide">
+            <Link to="/" className="text-primary-foreground hover:text-brand-beige transition-colors font-sans text-sm tracking-wide">
               HOME
             </Link>
-            <Link to="/menu" className="text-foreground hover:text-primary transition-colors font-sans text-sm tracking-wide">
+            <Link to="/menu" className="text-primary-foreground hover:text-brand-beige transition-colors font-sans text-sm tracking-wide">
               MENÜ
             </Link>
             <a
               href="https://www.instagram.com/libretto.ffm/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-foreground hover:text-primary transition-colors"
+              className="text-primary-foreground hover:text-brand-beige transition-colors"
               aria-label="Instagram"
             >
               <Instagram className="h-5 w-5" />
             </a>
             <Button
               asChild
-              className="bg-primary text-primary-foreground hover:bg-accent font-sans tracking-wide"
+              className="bg-brand-beige text-brand-green hover:bg-brand-beige-dark font-sans tracking-wide"
             >
               <a
                 href="https://www.opentable.de/restref/client/?rid=445905"
@@ -48,7 +48,7 @@ const Navigation = () => {
 
           {/* Mobile menu button */}
           <button
-            className="md:hidden text-foreground"
+            className="md:hidden text-primary-foreground"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
           >
@@ -61,14 +61,14 @@ const Navigation = () => {
           <div className="md:hidden py-4 space-y-4">
             <Link
               to="/"
-              className="block text-foreground hover:text-primary transition-colors font-sans text-sm tracking-wide"
+              className="block text-primary-foreground hover:text-brand-beige transition-colors font-sans text-sm tracking-wide"
               onClick={() => setIsOpen(false)}
             >
               HOME
             </Link>
             <Link
               to="/menu"
-              className="block text-foreground hover:text-primary transition-colors font-sans text-sm tracking-wide"
+              className="block text-primary-foreground hover:text-brand-beige transition-colors font-sans text-sm tracking-wide"
               onClick={() => setIsOpen(false)}
             >
               MENÜ
@@ -77,7 +77,7 @@ const Navigation = () => {
               href="https://www.instagram.com/libretto.ffm/"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors"
+              className="flex items-center space-x-2 text-primary-foreground hover:text-brand-beige transition-colors"
               onClick={() => setIsOpen(false)}
             >
               <Instagram className="h-5 w-5" />
@@ -85,7 +85,7 @@ const Navigation = () => {
             </a>
             <Button
               asChild
-              className="w-full bg-primary text-primary-foreground hover:bg-accent font-sans tracking-wide"
+              className="w-full bg-brand-beige text-brand-green hover:bg-brand-beige-dark font-sans tracking-wide"
             >
               <a
                 href="https://www.opentable.de/restref/client/?rid=445905"
