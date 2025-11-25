@@ -12,7 +12,7 @@ const Navigation = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           <Link to="/" className="flex items-center">
-            <img src={logo} alt="Libretto Logo" className="h-12 w-auto brightness-0 invert" />
+            <img src={logo} alt="Libretto Logo" className="h-12 w-auto" />
           </Link>
 
           {/* Desktop Navigation */}
