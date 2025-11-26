@@ -24,7 +24,7 @@ const Navigation = () => {
               MENÜ
             </Link>
             <a
-              href="https://www.instagram.com/libretto.ffm/"
+              href="https://www.instagram.com/cafelibretto/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-primary-foreground hover:text-brand-beige transition-colors"
@@ -74,7 +74,7 @@ const Navigation = () => {
               MENÜ
             </Link>
             <a
-              href="https://www.instagram.com/libretto.ffm/"
+              href="https://www.instagram.com/cafelibretto/"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center space-x-2 text-primary-foreground hover:text-brand-beige transition-colors"

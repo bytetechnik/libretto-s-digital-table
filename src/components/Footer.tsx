@@ -32,13 +32,13 @@ const Footer = () => {
                 <p>069 29 72 01 48</p>
               </div>
               <a
-                href="https://www.instagram.com/libretto.ffm/"
+              href="https://www.instagram.com/cafelibretto/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center space-x-3 hover:opacity-80 transition-opacity"
               >
                 <Instagram className="h-5 w-5 flex-shrink-0" />
-                <p>@libretto.ffm</p>
+                <p>@cafelibretto</p>
               </a>
             </div>
           </div>
