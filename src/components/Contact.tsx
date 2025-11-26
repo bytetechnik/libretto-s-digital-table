@@ -28,8 +28,8 @@ const Contact = () => {
                 <div>
                   <h3 className="font-serif text-xl text-foreground mb-2">Adresse</h3>
                   <p className="font-sans text-muted-foreground leading-relaxed">
-                    Musterstraße 123<br />
-                    12345 Berlin<br />
+                    Liebfrauenberg 24<br />
+                    60313 Frankfurt am Main<br />
                     Deutschland
                   </p>
                 </div>
@@ -79,16 +79,12 @@ const Contact = () => {
                   <h3 className="font-serif text-xl text-foreground mb-2">Öffnungszeiten</h3>
                   <div className="font-sans text-muted-foreground space-y-2">
                     <div className="flex justify-between gap-8">
-                      <span>Montag - Freitag:</span>
-                      <span className="font-medium">08:00 - 23:00</span>
-                    </div>
-                    <div className="flex justify-between gap-8">
-                      <span>Samstag:</span>
-                      <span className="font-medium">09:00 - 00:00</span>
+                      <span>Montag - Samstag:</span>
+                      <span className="font-medium">09:00 - 20:00</span>
                     </div>
                     <div className="flex justify-between gap-8">
                       <span>Sonntag:</span>
-                      <span className="font-medium">09:00 - 22:00</span>
+                      <span className="font-medium">Geschlossen</span>
                     </div>
                   </div>
                 </div>
@@ -102,7 +98,7 @@ const Contact = () => {
           >
             <div className="h-full min-h-[500px] rounded-lg overflow-hidden border-2 border-border shadow-lg">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2428.409435793997!2d13.404953977144254!3d52.52000097204479!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47a851c655f20989%3A0x26bbfb4e84674c63!2sBrandenburger%20Tor!5e0!3m2!1sen!2sde!4v1234567890123!5m2!1sen!2sde"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3034.9537485855835!2d8.681836076813578!3d50.11331641158051!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47bd0ea5b1608a9b%3A0x2debb2591f7a58d2!2sCaf%C3%A9%20Libretto!5e1!3m2!1sen!2sde!4v1764079307959!5m2!1sen!2sde"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}

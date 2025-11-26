@@ -7,83 +7,289 @@ import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 const Menu = () => {
   const menuSections = [
     {
-      title: "Frühstück & Brunch",
+      title: "FRÜHSTÜCK",
       items: [
         {
-          name: "Il Dolce Far Niente",
-          description:
-            "Frischkäse, Pesto, Tomate, Burrata, Manchego, Oliven, Parmaschinken, Salami, Pastrami, Grissini, gekochtes Ei, warmes Focaccia Brot",
-          price: "1 Pers. 17.5 / 2 Pers. 32.5",
+          name: "STOLTZE",
+          description: "1 Brötchen, Butter, Konfitüre, gekochtes Ei",
+          price: "6.9",
         },
         {
-          name: "Royale",
+          name: "GOETHE",
           description:
-            "Frischkäse, Graved Lachs, Tomaten- & Gurkenscheiben, rote Zwiebeln, Kapern, Olivenöl & Maldonsalz, gegrilltes Brioche-Brötchen, Glas Prosecco",
-          price: "1 Pers. 18.5 / 2 Pers. 35.5",
+            "1 Brötchen, 1 Vollkornbrötchen, Butter, Konfitüre, Farmerschinken, Salami, Pastrami, Gouda, 2 Eier im Glas mit Schnittlauch",
+          price: "13.5",
         },
         {
-          name: "English Breakfast",
+          name: "JULES VERNE",
+          description:
+            "Baguette, Sauerteigroissant, Butter, Konfitüre, Trauben, französischer Käse, gekochtes Ei",
+          price: "12.9",
+        },
+        {
+          name: "SHAKESPEARE",
           description:
             "Toastbrot, Butter, zwei Spiegeleier, knuspriger Bacon, Nürnberger Rostbratwürste, Baked Beans, gegrillte Tomate & Champignons, Heinz Ketchup, frisch gepresster Orangensaft",
           price: "14.9",
         },
         {
-          name: "Shakshuka",
+          name: "SHAKSHUKA",
           description:
             "Heiße Schmorpfanne aus der orientalischen Küche mit Tomaten, Zwiebeln, Kreuzkümmel, Paprika, zwei pochierten Eiern, Sesam, Petersilie, Schafskäse & warmem Focaccia Brot",
           price: "13.5",
         },
-      ],
-    },
-    {
-      title: "Lunch & Early Dinner",
-      items: [
         {
-          name: "Caesar Salad",
+          name: "FITNESS",
           description:
-            "Römersalat, geröstetes Brot, Parmigiano Reggiano, Caesar Dressing, wahlweise mit gegrilltem Hähnchen oder Garnelen",
-          price: "ab 12.5",
+            "2 Vollkornbrötchen, Blütenhonig, Frischkäse, Hummus, Gouda, Pastrami, Granola Müsli, gekochtes Ei, frisch gepresster Orangensaft",
+          price: "15.9",
         },
         {
-          name: "Pasta del Giorno",
-          description: "Täglich wechselnde Pasta-Kreation mit frischen, saisonalen Zutaten",
-          price: "ab 13.9",
-        },
-        {
-          name: "Risotto",
+          name: "IL DOLCE FAR NIENTE",
           description:
-            "Cremiger Risotto mit Trüffel, Parmesan und gerösteten Pinienkernen",
-          price: "15.5",
+            "Frischkäse, Pesto, Tomate, Burrata, Manchego, Oliven, Parmaschinken, Salami, Pastrami, Grissini, gekochtes Ei, warmes Focaccia Brot",
+          price: "1 Pers. 17.5 / 2 Pers. 32.5",
         },
-      ],
-    },
-    {
-      title: "Süßes",
-      items: [
         {
-          name: "Belgische Waffeln",
-          description: "Mit frischen Beeren, Sahne und Ahornsirup",
+          name: "ROYALE",
+          description:
+            "Frischkäse, Graved Lachs, Tomaten- & Gurkenscheiben, rote Zwiebeln, Kapern, Olivenöl & Maldonsalz, gegrilltes Brioche-Brötchen, Glas Prosecco",
+          price: "1 Pers. 18.5 / 2 Pers. 33.5",
+        },
+        {
+          name: "SIGNATURE LIBRETTO",
+          description:
+            "Frischkäse, Hummus, Butter, Konfitüre, Graved Lachs, Farmerschinken, Pastrami, Gouda, Salami, Brotkorb (Brötchen, Vollkornbrötchen, Croissant), Rühreier, Granola Müsli, Glas Prosecco oder frisch gepresster Orangensaft",
+          price: "1 Pers. 19.5 / 2 Pers. 37.5",
+        },
+        {
+          name: "HAUSGEMACHTES GRANOLA",
+          description:
+            "Joghurt, frisches Obst, Blütenhonig, Chiasamen, Kokosflocken, Granola (Knuspermüsli)",
+          price: "11",
+        },
+        {
+          name: "LAUWARMES PORRIDGE VEGAN",
+          description:
+            "Haferflocken, Hafermilch, frische Beeren, Kokosflocken, Kakaonibs, Agavensirup",
+          price: "10",
+        },
+        {
+          name: "BIRCHER-MÜSLI NACH ORIGINALREZEPT",
+          description:
+            "Frische Beeren, Apfel, Nüsse, Kokosflocken, Chiasamen, Kakaonibs",
+          price: "10",
+        },
+        {
+          name: "PANCAKES ODER FRENCH TOAST",
+          description: "Mit frischen Beeren, wahlweise mit Nutella oder Konfitüre",
+          price: "9.9",
+        },
+        {
+          name: "GRAVED LACHS MIT MEERRETTICH",
+          description: "",
           price: "9.5",
         },
         {
-          name: "Kaiserschmarrn",
-          description: "Traditioneller österreichischer Kaiserschmarrn mit Zwetschgenröster",
-          price: "11.5",
+          name: "KÄSEVARIATION ODER WURSTVARIATION",
+          description: "",
+          price: "7.5",
         },
         {
-          name: "Hausgemachter Apfelstrudel",
-          description: "Warm serviert mit Vanillesauce",
-          price: "8.5",
+          name: "PORTION FRISCHKÄSE, HUMMUS ODER GUACAMOLE",
+          description: "",
+          price: "3",
         },
         {
-          name: "Kuchen der Woche",
-          description: "Wechselnde Auswahl von renommierten Konditoreien",
-          price: "ab 5.5",
+          name: "PORTION BUTTER, KONFITÜRE, BLÜTENHONIG ODER NUTELLA",
+          description: "",
+          price: "1.5",
+        },
+        {
+          name: "INGWER SHOT",
+          description: "",
+          price: "4",
+        },
+        {
+          name: "2 EIER IM GLAS MIT SCHNITTLAUCH",
+          description: "",
+          price: "6.5",
+        },
+        {
+          name: "RÜHREI AUS DREI EIERN - NATUR",
+          description: "Mit Schnittlauch",
+          price: "7.5",
+        },
+        {
+          name: "RÜHREI AUS DREI EIERN - MIT BACON ODER FARMERSCHINKEN",
+          description: "Mit Schnittlauch",
+          price: "9",
+        },
+        {
+          name: "RÜHREI AUS DREI EIERN - MIT ZWIEBELN, SALAMI, TOMATEN, BERGKÄSE",
+          description: "Mit Schnittlauch",
+          price: "11",
+        },
+        {
+          name: "SPIEGELEI AUS DREI EIERN - NATUR",
+          description: "Mit Schnittlauch",
+          price: "7.5",
+        },
+        {
+          name: "SPIEGELEI AUS DREI EIERN - MIT BACON",
+          description: "Mit Schnittlauch",
+          price: "9",
+        },
+        {
+          name: "SPIEGELEI AUS DREI EIERN - MIT NÜRNBERGER ROSTBRATWÜRSTEN",
+          description: "Champignons, Tomaten & Schnittlauch",
+          price: "11",
+        },
+        {
+          name: "OMELETTE BOMBAY",
+          description: "Aus drei Eiern. Frisches Gemüse, Ingwer, Koriander, Kurkuma, Zwiebeln, Minzjoghurt",
+          price: "15",
+        },
+        {
+          name: "OMELETTE BAUERNART",
+          description: "Aus drei Eiern. Kartoffeln, Speck, Farmerschinken, Champignons, Zwiebeln, Bergkäse, Schnittlauch",
+          price: "14",
+        },
+        {
+          name: "OMELETTE PARISER ART",
+          description: "Aus drei Eiern. Comté Käse, Kartoffeln, Speck, Kirschtomaten, Petersilie",
+          price: "14",
+        },
+        {
+          name: "OMELETTE MEDITERRAN",
+          description: "Aus drei Eiern. Schafskäse, Tomaten, Oliven, Zwiebeln, Peperoni, Petersilie",
+          price: "13",
+        },
+        {
+          name: "ZWEI HALBE BELEGTE BRÖTCHEN",
+          description: "Wahlweise mit Salami, Farmerschinken, Pastrami, Brie oder Gouda",
+          price: "6.5",
+        },
+        {
+          name: "ZWEI GERÖSTETE BRIOCHE-HÄLFTEN",
+          description: "Mit Graved Lachs, Frischkäse, roten Zwiebeln & Kapern",
+          price: "9.5",
+        },
+        {
+          name: "AVOCADO STULLE",
+          description: "Weizensauerteigbrot, Guacamole, Tomate, Rührei, Kresse, Maldonsalz",
+          price: "14.9",
+        },
+        {
+          name: "AVOCADO STULLE MIT GRAVED LACHS",
+          description: "Weizensauerteigbrot, Guacamole, Tomate, Rührei, Kresse, Maldonsalz, Graved Lachs",
+          price: "17.9",
+        },
+        {
+          name: "HUMMUS STULLE",
+          description: "Weizensauerteigbrot, Hummus, Kichererbsen, Kirschtomaten, Schafskäse, Piment d'Espelette, Kresse",
+          price: "14.9",
+        },
+        {
+          name: "CAPRESE STULLE",
+          description: "Weizensauerteigbrot, Mozzarella, Pesto, Tomate, Rucola, Balsamico",
+          price: "13.9",
         },
       ],
     },
     {
-      title: "Drinks & Aperitivo",
+      title: "BRUNCH DELIGHTS",
+      items: [
+        {
+          name: "MIMOSA",
+          description: "Carpe Noctem Prosecco, Orangensaft",
+          price: "8",
+        },
+        {
+          name: "BELLINI",
+          description: "Carpe Noctem Prosecco, Pfirsichpüree, frisch gepresste Zitrone",
+          price: "9",
+        },
+        {
+          name: "ESPRESSO MARTINI",
+          description: "42 Below Vodka, Kaffeelikör, Espresso, Simple Sirup",
+          price: "11",
+        },
+        {
+          name: "EGGS BENEDICT, DER KLASSIKER!",
+          description: "Zwei pochierte Eier auf geröstetem Brioche vom Grill, mit Tomate & Sauce Hollandaise",
+          price: "Mit Farmerschinken 13.9 / Mit Graved Lachs 15.9 / Mit krossem Bacon 13.9 / Mit Guacamole + 2",
+        },
+        {
+          name: "CROQUE MADAME",
+          description: "Toast mit zartem Schinken, Original Maille Dijon Senf, Crème Fraîche & Spiegelei, überbacken mit Gruyère & Emmentaler. Serviert mit einem kleinen Beilagensalat",
+          price: "14.9",
+        },
+        {
+          name: "CROISSANT DELUXE",
+          description: "Das perfekte Zusammenspiel aus kross geröstetem Sauerteig-Croissant, Guacamole, einem pochierten Ei, Rucola & Sauce Hollandaise. Verfeinert mit geriebenem Comté Käse",
+          price: "13 / Mit Farmerschinken 14.9 / Mit krossem Bacon 14.9 / Mit Parmaschinken 15.9",
+        },
+      ],
+    },
+    {
+      title: "LUNCH & EARLY DINNER",
+      subtitle: "Herzhaft & Frisch. Mediterrane Klassiker, hausgemachte Lieblingsgerichte & kreative Kompositionen für den kleinen oder großen Hunger. Ideal zum Teilen, Genießen & Verweilen",
+      items: [
+        {
+          name: "TOMATENCREMESUPPE",
+          description: "Aus San Marzano Tomaten, fein abgeschmeckt mit Basilikumöl",
+          price: "8",
+        },
+        {
+          name: "IL PICCOLO SPUNTINO",
+          description: "Warme Focaccia mit 3 Dips: Frischkäse, Artischockencreme, Pesto",
+          price: "7.9",
+        },
+        {
+          name: "RÖSTBROT \"ITALIAN STYLE\"",
+          description: "Geröstetes Brot mit Pesto, marinierten Tomaten, Pinienkernen, altem Balsamico, Kresse & gezupfter Burrata",
+          price: "14.9",
+        },
+        {
+          name: "TAGLIERE - DAS HOLZBRETT (AB 2 PERSONEN)",
+          description: "Eine sorgfältig zusammengestellte Auswahl italienischer Spezialitäten: Feiner Aufschnitt, Burrata, Frischkäse, Pesto, Artischockencreme, Oliven & warmem Focaccia Brot",
+          price: "11.5 (P.P)",
+        },
+        {
+          name: "CLASSIC CAESAR",
+          description: "Blattsalat, Kirschtomaten, Radieschen, Hähnchenbrust im Pankomantel, Bacon-Chips, Croutons, Parmigiano & Caesar-Dressing. Alle Salate werden mit warmem Focaccia Brot serviert.",
+          price: "16.9",
+        },
+        {
+          name: "ZIEGENKÄSE & FREUNDE",
+          description: "Gratinierter Ziegenkäse auf Blattsalat mit Radieschen, Kirschtomaten, Gurken, karamelisierten Walnüssen, Trauben & Dijon-Vinaigrette. Alle Salate werden mit warmem Focaccia Brot serviert.",
+          price: "16.9",
+        },
+        {
+          name: "GARTENSALAT",
+          description: "Bunter Blattsalat mit Schafskäse, Kalamata Oliven, Peperoni, Kirschtomaten, Gurken, Radieschen, roten Zwiebeln & Dijon-Vinaigrette. Alle Salate werden mit warmem Focaccia Brot serviert.",
+          price: "15.9",
+        },
+        {
+          name: "MEDITERRANER SALAT VEGAN",
+          description: "Blattsalat mit hausgemachten Falafeln, Hummus, Kirschtomaten, Gurken, eingelegten Zwiebeln & Dijon-Vinaigrette. Alle Salate werden mit warmem Focaccia Brot serviert.",
+          price: "15.9",
+        },
+        {
+          name: "BELLA NONNA",
+          description: "Mediterraner Salat mit Kirschtomaten, Gurken, Radieschen, roten Zwiebeln, feinen Bohnen, Parmaschinken, Parmigiano & Dijon-Vinaigrette. Alle Salate werden mit warmem Focaccia Brot serviert.",
+          price: "15.9",
+        },
+        {
+          name: "GEMISCHTE SALAT BOWL",
+          description: "Blattsalat mit Kirschtomaten, Radieschen, Gurken, Zwiebeln & Dijon-Vinaigrette. Alle Salate werden mit warmem Focaccia Brot serviert.",
+          price: "9.9",
+        },
+      ],
+    },
+    {
+      title: "KAFFEE & GETRÄNKE",
       items: [
         {
           name: "Aperol Spritz",
@@ -134,9 +340,15 @@ const Menu = () => {
               
               return (
                 <div ref={ref} key={section.title}>
-                  <h2 className={`font-serif text-4xl md:text-5xl text-foreground mb-8 text-center animate-fade-up ${isVisible ? 'visible' : ''}`}>
+                  <h2 className={`font-serif text-4xl md:text-5xl text-foreground mb-4 text-center animate-fade-up ${isVisible ? 'visible' : ''}`}>
                     {section.title}
                   </h2>
+                  {section.subtitle && (
+                    <p className={`font-sans text-sm md:text-base text-muted-foreground mb-8 text-center italic animate-fade-up ${isVisible ? 'visible' : ''}`}>
+                      {section.subtitle}
+                    </p>
+                  )}
+                  {!section.subtitle && <div className="mb-8" />}
                   <div className="space-y-6">
                     {section.items.map((item, itemIndex) => (
                       <div
@@ -150,12 +362,50 @@ const Menu = () => {
                               <h3 className="font-serif text-xl md:text-2xl text-foreground mb-2">
                                 {item.name}
                               </h3>
-                              <p className="font-sans text-sm text-muted-foreground leading-relaxed">
-                                {item.description}
-                              </p>
+                              {item.description && (
+                                <p className="font-sans text-sm text-muted-foreground leading-relaxed">
+                                  {item.description}
+                                </p>
+                              )}
                             </div>
-                            <div className="font-sans font-medium text-foreground whitespace-nowrap">
-                              €{item.price}
+                            <div className="font-sans font-medium text-foreground text-right min-w-[200px]">
+                              {item.price.includes("/") ? (
+                                <div className="space-y-1">
+                                  {item.price.split(" / ").map((priceOption, idx) => {
+                                    // Check if price option contains a price number (like "13.9")
+                                    const fullPriceMatch = priceOption.match(/(\d+\.?\d*)$/);
+                                    // Check if it's an addition (like "+ 2")
+                                    const additionMatch = priceOption.match(/\+ (\d+\.?\d*)$/);
+                                    
+                                    if (fullPriceMatch) {
+                                      const priceValue = fullPriceMatch[1];
+                                      const priceText = priceOption.replace(/\d+\.?\d*$/, "").trim();
+                                      return (
+                                        <div key={idx} className="text-sm">
+                                          {priceText && <span className="text-muted-foreground">{priceText} </span>}
+                                          <span>€{priceValue}</span>
+                                        </div>
+                                      );
+                                    } else if (additionMatch) {
+                                      const additionValue = additionMatch[1];
+                                      const priceText = priceOption.replace(/\+\s*\d+\.?\d*$/, "").trim();
+                                      return (
+                                        <div key={idx} className="text-sm">
+                                          {priceText && <span className="text-muted-foreground">{priceText} </span>}
+                                          <span className="text-muted-foreground">+ €{additionValue}</span>
+                                        </div>
+                                      );
+                                    }
+                                    return (
+                                      <div key={idx} className="text-sm">
+                                        {priceOption}
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              ) : (
+                                <span>€{item.price}</span>
+                              )}
                             </div>
                           </div>
                         </Card>

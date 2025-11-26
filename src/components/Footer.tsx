@@ -3,7 +3,7 @@ import logo from "@/assets/libretto-logo.jpeg";
 
 const Footer = () => {
   return (
-    <footer className="bg-primary text-primary-foreground py-16 px-4">
+    <footer className="bg-[#0f2d1d] text-primary-foreground py-16 px-4">
       <div className="container mx-auto max-w-6xl">
         <div className="grid md:grid-cols-3 gap-12">
           {/* Logo and Description */}
@@ -50,20 +50,28 @@ const Footer = () => {
               <div className="flex items-start space-x-3">
                 <Clock className="h-5 w-5 mt-0.5 flex-shrink-0" />
                 <div>
-                  <p className="font-medium">Mo - Fr: 8:00 - 23:00</p>
-                  <p className="font-medium">Sa - So: 9:00 - 23:00</p>
-                  <p className="opacity-90 mt-2 text-xs">
-                    Küche: 8:00 - 22:00
-                  </p>
+                  <p className="font-medium">Mo - Sa: 9:00 - 20:00</p>
+                  <p className="font-medium">So: Geschlossen</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="border-t border-primary-foreground/20 mt-12 pt-8 text-center">
+        <div className="border-t border-primary-foreground/20 mt-12 pt-8 text-center space-y-2">
           <p className="font-sans text-sm opacity-75">
             © {new Date().getFullYear()} Libretto Cafe Restaurant Tagesbar. Alle Rechte vorbehalten.
+          </p>
+          <p className="font-sans text-xs opacity-60">
+            Entwickelt von{" "}
+            <a
+              href="https://bytetechnik.de"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:opacity-80"
+            >
+              ByteTechnik.de
+            </a>
           </p>
         </div>
       </div>
