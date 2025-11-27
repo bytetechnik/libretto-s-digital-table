@@ -94,8 +94,13 @@ const Hero = () => {
             </p>
           </div>
 
-          {/* Right side - CTA */}
+          {/* Right side - Description and CTA */}
           <div className="text-left md:text-right space-y-8 animate-fade-in stagger-5">
+            <p className="hidden md:block font-sans text-base md:text-lg text-primary-foreground/90 leading-relaxed max-w-md md:ml-auto">
+              Im Libretto beginnt der Tag mit Genuss — und das schon seit 2007. 
+              Erleben Sie authentische Küche in gemütlicher Atmosphäre.
+            </p>
+
             <div className="flex flex-col sm:flex-row gap-4 md:justify-end">
               <Button
                 asChild
