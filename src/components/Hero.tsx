@@ -59,8 +59,6 @@ const Hero = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/10 to-transparent animate-gradient-shift" />
       </div>
 
-      {/* Floating Menu Items / Testimonials */}
-      <FloatingElements />
 
       {/* Decorative frame elements */}
       <div className="absolute inset-8 border border-primary-foreground/20 pointer-events-none animate-fade-in" />
@@ -96,13 +94,8 @@ const Hero = () => {
             </p>
           </div>
 
-          {/* Right side - Description and CTA */}
+          {/* Right side - CTA */}
           <div className="text-left md:text-right space-y-8 animate-fade-in stagger-5">
-            <p className="font-sans text-base md:text-lg text-primary-foreground/90 leading-relaxed max-w-md md:ml-auto">
-              Im Libretto beginnt der Tag mit Genuss — und das schon seit 2007. 
-              Erleben Sie authentische Küche in gemütlicher Atmosphäre.
-            </p>
-
             <div className="flex flex-col sm:flex-row gap-4 md:justify-end">
               <Button
                 asChild
@@ -147,58 +140,6 @@ const Hero = () => {
         <div className="w-px h-12 bg-gradient-to-b from-primary-foreground/50 to-transparent mt-2" />
       </div>
     </section>
-  );
-};
-
-// Floating Elements Component
-const FloatingElements = () => {
-  const floatingItems = [
-    {
-      icon: <Star className="w-5 h-5" />,
-      text: "4.8/5",
-      label: "Bewertung",
-      position: { top: "15%", left: "8%" },
-      delay: "0s",
-    },
-    {
-      icon: <Coffee className="w-5 h-5" />,
-      text: "2007",
-      label: "Seit",
-      position: { top: "25%", right: "10%" },
-      delay: "1s",
-    },
-    {
-      icon: <UtensilsCrossed className="w-5 h-5" />,
-      text: "100+",
-      label: "Gerichte",
-      position: { bottom: "30%", left: "5%" },
-      delay: "2s",
-    },
-  ];
-
-  return (
-    <>
-      {floatingItems.map((item, index) => (
-        <div
-          key={index}
-          className="absolute hidden lg:flex flex-col items-center gap-2 p-4 bg-primary-foreground/10 backdrop-blur-md rounded-lg border border-primary-foreground/20 animate-float pointer-events-none"
-          style={{
-            ...item.position,
-            animationDelay: item.delay,
-          }}
-        >
-          <div className="text-primary-foreground/90">{item.icon}</div>
-          <div className="text-center">
-            <p className="font-serif text-xl font-semibold text-primary-foreground">
-              {item.text}
-            </p>
-            <p className="font-sans text-xs text-primary-foreground/70 uppercase tracking-wider">
-              {item.label}
-            </p>
-          </div>
-        </div>
-      ))}
-    </>
   );
 };
 
