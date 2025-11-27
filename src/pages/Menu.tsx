@@ -2,9 +2,18 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { Search, Sparkles } from "lucide-react";
+import { useState, useMemo } from "react";
 
 const Menu = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [randomDish, setRandomDish] = useState<any>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   const menuSections = [
     {
       title: "FRÜHSTÜCK",
@@ -315,6 +324,36 @@ const Menu = () => {
     },
   ];
 
+  // Get all unique categories
+  const categories = ["all", ...menuSections.map(section => section.title)];
+
+  // Filter menu items based on search and category
+  const filteredSections = useMemo(() => {
+    return menuSections
+      .map(section => ({
+        ...section,
+        items: section.items.filter(item => {
+          const matchesSearch = 
+            item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            item.description.toLowerCase().includes(searchTerm.toLowerCase());
+          const matchesCategory = 
+            selectedCategory === "all" || section.title === selectedCategory;
+          return matchesSearch && matchesCategory;
+        })
+      }))
+      .filter(section => section.items.length > 0);
+  }, [searchTerm, selectedCategory]);
+
+  // Get random dish
+  const getRandomDish = () => {
+    const allItems = menuSections.flatMap(section => 
+      section.items.map(item => ({ ...item, category: section.title }))
+    );
+    const randomIndex = Math.floor(Math.random() * allItems.length);
+    setRandomDish(allItems[randomIndex]);
+    setIsDialogOpen(true);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
@@ -331,10 +370,60 @@ const Menu = () => {
         </div>
       </section>
 
+      {/* Search and Filter Section */}
+      <section className="py-8 px-4 bg-secondary/20 border-b border-border">
+        <div className="container mx-auto max-w-4xl">
+          <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+            {/* Search Bar */}
+            <div className="relative w-full md:w-96">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                type="text"
+                placeholder="Suchen Sie nach Gerichten..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 bg-background"
+              />
+            </div>
+
+            {/* Random Dish Button */}
+            <Button
+              onClick={getRandomDish}
+              size="lg"
+              className="bg-accent hover:bg-accent/90 text-accent-foreground font-sans tracking-wide whitespace-nowrap group"
+            >
+              <Sparkles className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
+              Überrasch mich!
+            </Button>
+          </div>
+
+          {/* Category Filter */}
+          <div className="flex flex-wrap gap-2 mt-6 justify-center">
+            {categories.map((category) => (
+              <Button
+                key={category}
+                variant={selectedCategory === category ? "default" : "outline"}
+                onClick={() => setSelectedCategory(category)}
+                className="font-sans text-sm"
+              >
+                {category === "all" ? "Alle Kategorien" : category}
+              </Button>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Menu Sections */}
       <section className="py-16 px-4">
         <div className="container mx-auto max-w-4xl space-y-16">
-          {menuSections.map((section, sectionIndex) => {
+          {filteredSections.length === 0 ? (
+            <div className="text-center py-16">
+              <p className="text-muted-foreground text-lg">
+                Keine Gerichte gefunden. Versuchen Sie eine andere Suche.
+              </p>
+            </div>
+          ) : (
+            filteredSections.map((section, sectionIndex) => {
             const SectionWrapper = () => {
               const { ref, isVisible } = useScrollAnimation(0.1);
               
@@ -417,9 +506,52 @@ const Menu = () => {
             };
             
             return <SectionWrapper key={sectionIndex} />;
-          })}
+          })
+          )}
         </div>
       </section>
+
+      {/* Random Dish Dialog */}
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="font-serif text-3xl flex items-center gap-2">
+              <Sparkles className="h-6 w-6 text-accent" />
+              Ihre Empfehlung
+            </DialogTitle>
+            <DialogDescription className="text-muted-foreground text-sm">
+              Wie wäre es damit?
+            </DialogDescription>
+          </DialogHeader>
+          {randomDish && (
+            <div className="space-y-4 pt-4">
+              <div className="text-xs uppercase tracking-wider text-accent font-semibold">
+                {randomDish.category}
+              </div>
+              <h3 className="font-serif text-2xl text-foreground">
+                {randomDish.name}
+              </h3>
+              {randomDish.description && (
+                <p className="text-muted-foreground leading-relaxed">
+                  {randomDish.description}
+                </p>
+              )}
+              <div className="pt-4 border-t border-border">
+                <div className="font-sans font-semibold text-2xl text-foreground">
+                  €{randomDish.price}
+                </div>
+              </div>
+              <Button
+                onClick={getRandomDish}
+                variant="outline"
+                className="w-full mt-4"
+              >
+                Noch eine Empfehlung
+              </Button>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
 
       {/* CTA Section */}
       <CTASection />
