@@ -135,9 +135,6 @@ const Hero = () => {
 
       {/* Enhanced Scroll indicator */}
       <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-fade-in stagger-6 z-20">
-        <p className="font-sans text-xs tracking-[0.3em] text-primary-foreground/70 uppercase mb-2">
-          Scroll
-        </p>
         <div className="relative">
           <div className="absolute inset-0 bg-primary-foreground/20 rounded-full blur-md animate-pulse" />
           <ChevronDown className="relative w-6 h-6 text-primary-foreground/70 animate-bounce" />
