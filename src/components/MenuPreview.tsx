@@ -2,26 +2,29 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { t } from "@/translations";
 
 const MenuPreview = () => {
   const { ref, isVisible } = useScrollAnimation(0.1);
+  const { language } = useLanguage();
 
   const categories = [
     {
-      title: "Frühstück & Brunch",
-      description: "Traditionelles Frühstück und moderne Brunch-Optionen",
+      title: t(language, "menuPreview.categories.breakfast.title"),
+      description: t(language, "menuPreview.categories.breakfast.description"),
     },
     {
-      title: "Lunch & Early Dinner",
-      description: "Sorgfältig ausgewählte Gerichte mit saisonalen Zutaten",
+      title: t(language, "menuPreview.categories.lunch.title"),
+      description: t(language, "menuPreview.categories.lunch.description"),
     },
     {
-      title: "Süßes",
-      description: "Waffeln, Kaiserschmarrn, Kuchen und Apfelstrudel",
+      title: t(language, "menuPreview.categories.sweet.title"),
+      description: t(language, "menuPreview.categories.sweet.description"),
     },
     {
-      title: "Drinks & Aperitivo",
-      description: "Erlesene Weine, Cocktails und kleine Snacks",
+      title: t(language, "menuPreview.categories.drinks.title"),
+      description: t(language, "menuPreview.categories.drinks.description"),
     },
   ];
 
@@ -30,12 +33,11 @@ const MenuPreview = () => {
       <div className="container mx-auto max-w-6xl">
         <div className={`text-center mb-16 animate-fade-up ${isVisible ? 'visible' : ''}`}>
           <h2 className="font-serif text-5xl md:text-6xl font-light text-foreground mb-6">
-            Unsere Karte
+            {t(language, "menuPreview.title")}
           </h2>
           <div className="w-24 h-0.5 bg-primary mx-auto mb-8" />
           <p className="text-muted-foreground font-sans max-w-2xl mx-auto">
-            Von traditionellem Frühstück bis zum stilvollen Aperitivo – entdecken Sie unsere
-            vielfältige Auswahl
+            {t(language, "menuPreview.subtitle")}
           </p>
         </div>
 
@@ -59,7 +61,7 @@ const MenuPreview = () => {
             size="lg"
             className="bg-primary text-primary-foreground hover:bg-accent font-sans tracking-wide"
           >
-            <Link to="/menu">VOLLSTÄNDIGES MENÜ ANSEHEN</Link>
+            <Link to="/menu">{t(language, "menuPreview.viewMenu")}</Link>
           </Button>
           <div>
             <Button
@@ -67,7 +69,7 @@ const MenuPreview = () => {
               variant="link"
               className="text-primary hover:text-accent font-sans tracking-wide"
             >
-              <a href="#specials">Zu den Tages-Specials</a>
+              <a href="#specials">{t(language, "menuPreview.viewSpecials")}</a>
             </Button>
           </div>
         </div>

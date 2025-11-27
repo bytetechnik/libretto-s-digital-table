@@ -5,6 +5,8 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { t } from "@/translations";
 import { Search, Sparkles } from "lucide-react";
 import { useState, useMemo } from "react";
 
@@ -13,6 +15,7 @@ const Menu = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [randomDish, setRandomDish] = useState<any>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { language } = useLanguage();
 
   const menuSections = [
     {
@@ -361,11 +364,10 @@ const Menu = () => {
       {/* Header */}
       <section className="pt-32 pb-16 px-4 bg-primary text-primary-foreground">
         <div className="container mx-auto max-w-4xl text-center animate-fade-in">
-          <h1 className="font-serif text-6xl md:text-7xl font-light mb-6">Unsere Karte</h1>
+          <h1 className="font-serif text-6xl md:text-7xl font-light mb-6">{t(language, "menu.title")}</h1>
           <div className="w-24 h-0.5 bg-primary-foreground mx-auto mb-8" />
           <p className="font-sans text-lg leading-relaxed max-w-2xl mx-auto">
-            Von traditionellem Frühstück bis zum stilvollen Aperitivo – genießen Sie unsere
-            vielfältige Auswahl mit höchster Qualität
+            {t(language, "menu.subtitle")}
           </p>
         </div>
       </section>
@@ -379,7 +381,7 @@ const Menu = () => {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 type="text"
-                placeholder="Suchen Sie nach Gerichten..."
+                placeholder={t(language, "menu.search")}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10 bg-background"
@@ -393,7 +395,7 @@ const Menu = () => {
               className="bg-accent hover:bg-accent/90 text-accent-foreground font-sans tracking-wide group w-full md:w-auto md:self-center"
             >
               <Sparkles className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
-              Überrasch mich!
+              {t(language, "menu.surprise")}
             </Button>
           </div>
 
@@ -406,7 +408,7 @@ const Menu = () => {
                 onClick={() => setSelectedCategory(category)}
                 className="font-sans text-xs sm:text-sm px-3 py-2"
               >
-                {category === "all" ? "Alle Kategorien" : category}
+                {category === "all" ? t(language, "menu.allCategories") : category}
               </Button>
             ))}
           </div>
@@ -419,7 +421,7 @@ const Menu = () => {
           {filteredSections.length === 0 ? (
             <div className="text-center py-16">
               <p className="text-muted-foreground text-lg">
-                Keine Gerichte gefunden. Versuchen Sie eine andere Suche.
+                {t(language, "menu.noResults")}
               </p>
             </div>
           ) : (
@@ -517,16 +519,16 @@ const Menu = () => {
           <DialogHeader>
             <DialogTitle className="font-serif text-3xl flex items-center gap-2">
               <Sparkles className="h-6 w-6 text-accent" />
-              Ihre Empfehlung
+              {t(language, "menu.randomDishTitle")}
             </DialogTitle>
             <DialogDescription className="text-muted-foreground text-sm">
-              Wie wäre es damit?
+              {language === "de" ? "Wie wäre es damit?" : "How about this?"}
             </DialogDescription>
           </DialogHeader>
           {randomDish && (
             <div className="space-y-4 pt-4">
               <div className="text-xs uppercase tracking-wider text-accent font-semibold">
-                {randomDish.category}
+                {t(language, "menu.randomDishCategory")}
               </div>
               <h3 className="font-serif text-2xl text-foreground">
                 {randomDish.name}
@@ -546,7 +548,7 @@ const Menu = () => {
                 variant="outline"
                 className="w-full mt-4"
               >
-                Noch eine Empfehlung
+                {language === "de" ? "Noch eine Empfehlung" : "Another suggestion"}
               </Button>
             </div>
           )}
@@ -563,15 +565,16 @@ const Menu = () => {
 
 const CTASection = () => {
   const { ref, isVisible } = useScrollAnimation(0.1);
+  const { language } = useLanguage();
   
   return (
     <section ref={ref} className="py-16 px-4 bg-secondary/30">
       <div className={`container mx-auto max-w-2xl text-center animate-fade-up ${isVisible ? 'visible' : ''}`}>
         <h2 className="font-serif text-3xl md:text-4xl text-foreground mb-6">
-          Reservieren Sie Ihren Tisch
+          {language === "de" ? "Reservieren Sie Ihren Tisch" : "Reserve Your Table"}
         </h2>
         <p className="font-sans text-muted-foreground mb-8">
-          Sichern Sie sich Ihren Platz für ein unvergessliches kulinarisches Erlebnis
+          {language === "de" ? "Sichern Sie sich Ihren Platz für ein unvergessliches kulinarisches Erlebnis" : "Secure your spot for an unforgettable culinary experience"}
         </p>
         <Button
           asChild
@@ -583,7 +586,7 @@ const CTASection = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            JETZT RESERVIEREN
+            {language === "de" ? "JETZT RESERVIEREN" : "RESERVE NOW"}
           </a>
         </Button>
       </div>

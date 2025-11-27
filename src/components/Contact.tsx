@@ -1,8 +1,11 @@
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { t } from "@/translations";
 
 const Contact = () => {
   const { ref, isVisible } = useScrollAnimation();
+  const { language } = useLanguage();
 
   return (
     <section id="contact" className="py-24 bg-background">
@@ -12,7 +15,7 @@ const Contact = () => {
           className={`text-center mb-16 animate-fade-up ${isVisible ? "visible" : ""}`}
         >
           <h2 className="font-serif text-5xl md:text-6xl text-foreground mb-4">
-            Kontakt
+            {t(language, "contact.title")}
           </h2>
           <div className="h-1 w-24 bg-primary mx-auto" />
         </div>
@@ -26,7 +29,7 @@ const Contact = () => {
               <div className="flex items-start gap-4 p-6 bg-card rounded-lg border border-border hover:border-primary transition-colors">
                 <MapPin className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
                 <div>
-                  <h3 className="font-serif text-xl text-foreground mb-2">Adresse</h3>
+                  <h3 className="font-serif text-xl text-foreground mb-2">{t(language, "contact.address")}</h3>
                   <p className="font-sans text-muted-foreground leading-relaxed">
                     Liebfrauenberg 24<br />
                     60313 Frankfurt am Main<br />
@@ -42,7 +45,7 @@ const Contact = () => {
               <div className="flex items-start gap-4 p-6 bg-card rounded-lg border border-border hover:border-primary transition-colors">
                 <Phone className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
                 <div>
-                  <h3 className="font-serif text-xl text-foreground mb-2">Telefon</h3>
+                  <h3 className="font-serif text-xl text-foreground mb-2">{t(language, "contact.phone")}</h3>
                   <a
                     href="tel:+49301234567"
                     className="font-sans text-muted-foreground hover:text-primary transition-colors"
@@ -59,7 +62,7 @@ const Contact = () => {
               <div className="flex items-start gap-4 p-6 bg-card rounded-lg border border-border hover:border-primary transition-colors">
                 <Mail className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
                 <div>
-                  <h3 className="font-serif text-xl text-foreground mb-2">E-Mail</h3>
+                  <h3 className="font-serif text-xl text-foreground mb-2">{t(language, "contact.email")}</h3>
                   <a
                     href="mailto:info@libretto.de"
                     className="font-sans text-muted-foreground hover:text-primary transition-colors"
@@ -76,15 +79,15 @@ const Contact = () => {
               <div className="flex items-start gap-4 p-6 bg-card rounded-lg border border-border hover:border-primary transition-colors">
                 <Clock className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
                 <div>
-                  <h3 className="font-serif text-xl text-foreground mb-2">Öffnungszeiten</h3>
+                  <h3 className="font-serif text-xl text-foreground mb-2">{t(language, "contact.hours")}</h3>
                   <div className="font-sans text-muted-foreground space-y-2">
                     <div className="flex justify-between gap-8">
-                      <span>Montag - Samstag:</span>
+                      <span>{t(language, "contact.weekdays")}</span>
                       <span className="font-medium">09:00 - 20:00</span>
                     </div>
                     <div className="flex justify-between gap-8">
-                      <span>Sonntag:</span>
-                      <span className="font-medium">Geschlossen</span>
+                      <span>{t(language, "contact.sunday")}</span>
+                      <span className="font-medium">{t(language, "contact.closed")}</span>
                     </div>
                   </div>
                 </div>

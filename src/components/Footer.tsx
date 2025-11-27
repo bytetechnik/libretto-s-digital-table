@@ -1,7 +1,10 @@
 import { Instagram, MapPin, Phone, Clock } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { t } from "@/translations";
 import logo from "@/assets/libretto-logo.jpeg";
 
 const Footer = () => {
+  const { language } = useLanguage();
   return (
     <footer className="bg-[#0f2d1d] text-primary-foreground py-16 px-4">
       <div className="container mx-auto max-w-6xl">
@@ -10,14 +13,13 @@ const Footer = () => {
           <div>
             <img src={logo} alt="Libretto Logo" className="h-16 w-auto mb-4 bg-primary-foreground/10 p-2 rounded" />
             <p className="font-sans text-sm leading-relaxed opacity-90">
-              Seit 2007 Ihr Ort für Genuss in Frankfurt. Qualität und Gastfreundschaft seit über
-              einem Jahrzehnt.
+              {t(language, "footer.description")}
             </p>
           </div>
 
           {/* Contact Information */}
           <div>
-            <h3 className="font-serif text-2xl mb-4">Kontakt</h3>
+            <h3 className="font-serif text-2xl mb-4">{t(language, "footer.contact")}</h3>
             <div className="space-y-3 font-sans text-sm">
               <div className="flex items-start space-x-3">
                 <MapPin className="h-5 w-5 mt-0.5 flex-shrink-0" />
@@ -45,7 +47,7 @@ const Footer = () => {
 
           {/* Opening Hours */}
           <div>
-            <h3 className="font-serif text-2xl mb-4">Öffnungszeiten</h3>
+            <h3 className="font-serif text-2xl mb-4">{t(language, "footer.hours")}</h3>
             <div className="space-y-2 font-sans text-sm">
               <div className="flex items-start space-x-3">
                 <Clock className="h-5 w-5 mt-0.5 flex-shrink-0" />
@@ -60,10 +62,10 @@ const Footer = () => {
 
         <div className="border-t border-primary-foreground/20 mt-12 pt-8 text-center space-y-2">
           <p className="font-sans text-sm opacity-75">
-            © {new Date().getFullYear()} Libretto Cafe Restaurant Tagesbar. Alle Rechte vorbehalten.
+            © {new Date().getFullYear()} Libretto Cafe Restaurant Tagesbar. {t(language, "footer.rights")}
           </p>
           <p className="font-sans text-xs opacity-60">
-            Entwickelt von{" "}
+            {t(language, "footer.developedBy")}{" "}
             <a
               href="https://bytetechnik.de"
               target="_blank"

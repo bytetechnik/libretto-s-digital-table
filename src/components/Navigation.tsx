@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, Instagram } from "lucide-react";
+import { Menu, X, Instagram, Languages } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { t } from "@/translations";
 import logo from "@/assets/libretto-logo.jpeg";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { language, setLanguage } = useLanguage();
 
   return (
     <nav className="fixed top-0 w-full bg-[#0f2d1d] backdrop-blur-sm z-50 border-b border-primary/20">
@@ -18,10 +21,10 @@ const Navigation = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             <Link to="/" className="text-primary-foreground hover:text-brand-beige transition-colors font-sans text-sm tracking-wide">
-              HOME
+              {t(language, "nav.home")}
             </Link>
             <Link to="/menu" className="text-primary-foreground hover:text-brand-beige transition-colors font-sans text-sm tracking-wide">
-              MENÜ
+              {t(language, "nav.menu")}
             </Link>
             <a
               href="https://www.instagram.com/cafelibretto/"
@@ -32,6 +35,14 @@ const Navigation = () => {
             >
               <Instagram className="h-5 w-5" />
             </a>
+            <button
+              onClick={() => setLanguage(language === "de" ? "en" : "de")}
+              className="text-primary-foreground hover:text-brand-beige transition-colors flex items-center space-x-1"
+              aria-label="Switch language"
+            >
+              <Languages className="h-5 w-5" />
+              <span className="font-sans text-sm tracking-wide">{language.toUpperCase()}</span>
+            </button>
             <Button
               asChild
               className="bg-brand-beige text-brand-green hover:bg-brand-beige-dark font-sans tracking-wide"
@@ -41,7 +52,7 @@ const Navigation = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                RESERVIEREN
+                {t(language, "nav.reserve")}
               </a>
             </Button>
           </div>
@@ -64,14 +75,14 @@ const Navigation = () => {
               className="block text-primary-foreground hover:text-brand-beige transition-colors font-sans text-sm tracking-wide"
               onClick={() => setIsOpen(false)}
             >
-              HOME
+              {t(language, "nav.home")}
             </Link>
             <Link
               to="/menu"
               className="block text-primary-foreground hover:text-brand-beige transition-colors font-sans text-sm tracking-wide"
               onClick={() => setIsOpen(false)}
             >
-              MENÜ
+              {t(language, "nav.menu")}
             </Link>
             <a
               href="https://www.instagram.com/cafelibretto/"
@@ -81,8 +92,20 @@ const Navigation = () => {
               onClick={() => setIsOpen(false)}
             >
               <Instagram className="h-5 w-5" />
-              <span className="font-sans text-sm tracking-wide">INSTAGRAM</span>
+              <span className="font-sans text-sm tracking-wide">{t(language, "nav.instagram")}</span>
             </a>
+            <button
+              onClick={() => {
+                setLanguage(language === "de" ? "en" : "de");
+                setIsOpen(false);
+              }}
+              className="flex items-center space-x-2 text-primary-foreground hover:text-brand-beige transition-colors w-full"
+            >
+              <Languages className="h-5 w-5" />
+              <span className="font-sans text-sm tracking-wide">
+                {language === "de" ? "English" : "Deutsch"}
+              </span>
+            </button>
             <Button
               asChild
               className="w-full bg-brand-beige text-brand-green hover:bg-brand-beige-dark font-sans tracking-wide"
@@ -92,7 +115,7 @@ const Navigation = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                RESERVIEREN
+                {t(language, "nav.reserve")}
               </a>
             </Button>
           </div>
