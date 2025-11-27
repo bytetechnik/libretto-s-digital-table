@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, Star, Coffee, UtensilsCrossed } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { t } from "@/translations";
 import heroImage from "@/assets/hero-image.jpeg";
 
 
 const Hero = () => {
   const [scrollY, setScrollY] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const { language } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -84,21 +87,20 @@ const Hero = () => {
             {/* Main heading */}
             <div className="animate-fade-in stagger-2">
               <h1 className="font-serif text-7xl md:text-9xl font-light text-primary-foreground leading-none mb-4">
-                Libretto
+                {t(language, "hero.title")}
               </h1>
               <div className="h-1 w-32 bg-primary-foreground/60 animate-fade-in stagger-3" />
             </div>
 
             <p className="font-serif text-2xl md:text-4xl italic text-primary-foreground/95 animate-fade-in stagger-4">
-              Cafe · Restaurant · Tagesbar
+              {t(language, "hero.subtitle")}
             </p>
           </div>
 
           {/* Right side - Description and CTA */}
           <div className="text-left md:text-right space-y-8 animate-fade-in stagger-5">
             <p className="hidden md:block font-sans text-base md:text-lg text-primary-foreground/90 leading-relaxed max-w-md md:ml-auto">
-              Im Libretto beginnt der Tag mit Genuss — und das schon seit 2007. 
-              Erleben Sie authentische Küche in gemütlicher Atmosphäre.
+              {t(language, "hero.description")}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 md:justify-end">
@@ -109,7 +111,7 @@ const Hero = () => {
               >
                 <a href="#about" className="relative z-10">
                   <span className="absolute inset-0 bg-gradient-to-r from-primary-foreground/0 via-primary-foreground/20 to-primary-foreground/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
-                  MEHR ERFAHREN
+                  {t(language, "hero.cta")}
                 </a>
               </Button>
               <Button
@@ -125,7 +127,7 @@ const Hero = () => {
                   className="relative z-10"
                 >
                   <span className="absolute inset-0 bg-primary-foreground translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300" />
-                  <span className="relative z-10">TISCH RESERVIEREN</span>
+                  <span className="relative z-10">{t(language, "nav.reserve")}</span>
                 </a>
               </Button>
             </div>
