@@ -373,9 +373,9 @@ const Menu = () => {
       {/* Search and Filter Section */}
       <section className="py-8 px-4 bg-secondary/20 border-b border-border">
         <div className="container mx-auto max-w-4xl">
-          <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+          <div className="flex flex-col gap-4 items-stretch">
             {/* Search Bar */}
-            <div className="relative w-full md:w-96">
+            <div className="relative w-full">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 type="text"
@@ -390,7 +390,7 @@ const Menu = () => {
             <Button
               onClick={getRandomDish}
               size="lg"
-              className="bg-accent hover:bg-accent/90 text-accent-foreground font-sans tracking-wide whitespace-nowrap group"
+              className="bg-accent hover:bg-accent/90 text-accent-foreground font-sans tracking-wide group w-full md:w-auto md:self-center"
             >
               <Sparkles className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
               Überrasch mich!
@@ -404,7 +404,7 @@ const Menu = () => {
                 key={category}
                 variant={selectedCategory === category ? "default" : "outline"}
                 onClick={() => setSelectedCategory(category)}
-                className="font-sans text-sm"
+                className="font-sans text-xs sm:text-sm px-3 py-2"
               >
                 {category === "all" ? "Alle Kategorien" : category}
               </Button>
@@ -445,10 +445,10 @@ const Menu = () => {
                         className={`animate-slide-in ${isVisible ? 'visible' : ''}`}
                         style={{ animationDelay: `${itemIndex * 0.05}s` }}
                       >
-                        <Card className="p-6 bg-card hover:shadow-md transition-shadow">
-                          <div className="flex justify-between items-start gap-4">
+                        <Card className="p-4 sm:p-6 bg-card hover:shadow-md transition-shadow">
+                          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 sm:gap-4">
                             <div className="flex-1">
-                              <h3 className="font-serif text-xl md:text-2xl text-foreground mb-2">
+                              <h3 className="font-serif text-lg sm:text-xl md:text-2xl text-foreground mb-2">
                                 {item.name}
                               </h3>
                               {item.description && (
@@ -457,7 +457,7 @@ const Menu = () => {
                                 </p>
                               )}
                             </div>
-                            <div className="font-sans font-medium text-foreground text-right min-w-[200px]">
+                            <div className="font-sans font-medium text-foreground text-left sm:text-right sm:min-w-[120px] md:min-w-[160px]">
                               {item.price.includes("/") ? (
                                 <div className="space-y-1">
                                   {item.price.split(" / ").map((priceOption, idx) => {
