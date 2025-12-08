@@ -57,14 +57,24 @@ const Navigation = () => {
             </Button>
           </div>
 
-          {/* Mobile menu button */}
-          <button
-            className="md:hidden text-primary-foreground"
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label="Toggle menu"
-          >
-            {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
+          {/* Mobile Navigation - Language switcher and menu button */}
+          <div className="md:hidden flex items-center space-x-4">
+            <button
+              onClick={() => setLanguage(language === "de" ? "en" : "de")}
+              className="text-primary-foreground hover:text-brand-beige transition-colors flex items-center space-x-1"
+              aria-label="Switch language"
+            >
+              <Languages className="h-5 w-5" />
+              <span className="font-sans text-sm tracking-wide">{language.toUpperCase()}</span>
+            </button>
+            <button
+              className="text-primary-foreground"
+              onClick={() => setIsOpen(!isOpen)}
+              aria-label="Toggle menu"
+            >
+              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Navigation */}
@@ -94,18 +104,6 @@ const Navigation = () => {
               <Instagram className="h-5 w-5" />
               <span className="font-sans text-sm tracking-wide">{t(language, "nav.instagram")}</span>
             </a>
-            <button
-              onClick={() => {
-                setLanguage(language === "de" ? "en" : "de");
-                setIsOpen(false);
-              }}
-              className="flex items-center space-x-2 text-primary-foreground hover:text-brand-beige transition-colors w-full"
-            >
-              <Languages className="h-5 w-5" />
-              <span className="font-sans text-sm tracking-wide">
-                {language === "de" ? "English" : "Deutsch"}
-              </span>
-            </button>
             <Button
               asChild
               className="w-full bg-brand-beige text-brand-green hover:bg-brand-beige-dark font-sans tracking-wide"

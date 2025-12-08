@@ -31,9 +31,8 @@ const Contact = () => {
                 <div>
                   <h3 className="font-serif text-xl text-foreground mb-2">{t(language, "contact.address")}</h3>
                   <p className="font-sans text-muted-foreground leading-relaxed">
-                    Liebfrauenberg 24<br />
-                    60313 Frankfurt am Main<br />
-                    Deutschland
+                    Hasengasse 4<br />
+                    60311 Frankfurt am Main
                   </p>
                 </div>
               </div>
@@ -47,10 +46,10 @@ const Contact = () => {
                 <div>
                   <h3 className="font-serif text-xl text-foreground mb-2">{t(language, "contact.phone")}</h3>
                   <a
-                    href="tel:+49301234567"
+                    href="tel:+496920019010"
                     className="font-sans text-muted-foreground hover:text-primary transition-colors"
                   >
-                    +49 30 1234567
+                    06920019010
                   </a>
                 </div>
               </div>

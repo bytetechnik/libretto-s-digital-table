@@ -1,4 +1,5 @@
 import { Instagram, MapPin, Phone, Clock } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { t } from "@/translations";
 import logo from "@/assets/libretto-logo.jpeg";
@@ -11,7 +12,7 @@ const Footer = () => {
         <div className="grid md:grid-cols-3 gap-12">
           {/* Logo and Description */}
           <div>
-            <img src={logo} alt="Libretto Logo" className="h-16 w-auto mb-4 bg-primary-foreground/10 p-2 rounded" />
+            <img src={logo} alt="Libretto Logo" className="h-16 w-auto mb-4" />
             <p className="font-sans text-sm leading-relaxed opacity-90">
               {t(language, "footer.description")}
             </p>
@@ -24,14 +25,14 @@ const Footer = () => {
               <div className="flex items-start space-x-3">
                 <MapPin className="h-5 w-5 mt-0.5 flex-shrink-0" />
                 <p>
-                  Liebfrauenberg 24
+                  Hasengasse 4
                   <br />
-                  60313 Frankfurt am Main
+                  60311 Frankfurt am Main
                 </p>
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="h-5 w-5 flex-shrink-0" />
-                <p>069 29 72 01 48</p>
+                <p>06920019010</p>
               </div>
               <a
               href="https://www.instagram.com/cafelibretto/"
@@ -61,6 +62,21 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-primary-foreground/20 mt-12 pt-8 text-center space-y-2">
+          <div className="flex flex-wrap justify-center gap-4 mb-4">
+            <Link
+              to="/impressum"
+              className="font-sans text-sm opacity-75 hover:opacity-100 underline transition-opacity"
+            >
+              {t(language, "footer.impressum")}
+            </Link>
+            <span className="font-sans text-sm opacity-75">|</span>
+            <Link
+              to="/datenschutz"
+              className="font-sans text-sm opacity-75 hover:opacity-100 underline transition-opacity"
+            >
+              {t(language, "footer.dataPrivacy")}
+            </Link>
+          </div>
           <p className="font-sans text-sm opacity-75">
             © {new Date().getFullYear()} Libretto Cafe Restaurant Tagesbar. {t(language, "footer.rights")}
           </p>

@@ -2,6 +2,7 @@ import { Card } from "@/components/ui/card";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { t } from "@/translations";
+import wochenkarteImage from "@/assets/wochenkarte.jpeg";
 
 const Specials = () => {
   const { ref, isVisible } = useScrollAnimation(0.1);
@@ -18,22 +19,16 @@ const Specials = () => {
         </div>
 
         <div className={`animate-fade-up ${isVisible ? 'visible stagger-2' : ''}`}>
-          <Card className="p-8 md:p-12 bg-primary text-primary-foreground">
-            <div className="text-center space-y-4">
-              <p className="font-sans text-sm tracking-[0.2em] opacity-90">{t(language, "specials.today")}</p>
-              <h3 className="font-serif text-3xl md:text-4xl mb-6">
-                {t(language, "specials.dish")}
-              </h3>
-              <p className="font-sans leading-relaxed max-w-2xl mx-auto">
-                {t(language, "specials.description")}
-              </p>
+          <Card className="overflow-hidden shadow-2xl border-2 border-border hover:shadow-3xl transition-shadow duration-300">
+            <div className="relative">
+              <img 
+                src={wochenkarteImage} 
+                alt="Wochenkarte" 
+                className="w-full h-auto object-cover"
+              />
             </div>
           </Card>
         </div>
-
-        <p className={`text-center text-muted-foreground font-sans text-sm mt-8 italic animate-fade-up ${isVisible ? 'visible stagger-3' : ''}`}>
-          {t(language, "specials.note")}
-        </p>
       </div>
     </section>
   );

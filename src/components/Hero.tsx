@@ -4,6 +4,7 @@ import { ChevronDown, Star, Coffee, UtensilsCrossed } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { t } from "@/translations";
 import heroImage from "@/assets/hero-image.jpeg";
+import logoImage from "@/assets/Libretto-logo-without Background.png";
 
 
 const Hero = () => {
@@ -76,25 +77,14 @@ const Hero = () => {
         <div className="grid md:grid-cols-2 gap-8 items-center">
           {/* Left side - Main typography */}
           <div className="text-left space-y-6">
-            {/* Decorative element */}
-            <div className="flex items-center gap-4 animate-fade-in">
-              <div className="h-px w-16 bg-primary-foreground/60" />
-              <p className="font-sans text-xs tracking-[0.4em] text-primary-foreground/90 uppercase">
-                Established 2007
-              </p>
-            </div>
-
-            {/* Main heading */}
+            {/* Logo */}
             <div className="animate-fade-in stagger-2">
-              <h1 className="font-serif text-7xl md:text-9xl font-light text-primary-foreground leading-none mb-4">
-                {t(language, "hero.title")}
-              </h1>
-              <div className="h-1 w-32 bg-primary-foreground/60 animate-fade-in stagger-3" />
+              <img 
+                src={logoImage} 
+                alt="Libretto Logo" 
+                className="max-w-full h-auto max-h-64 md:max-h-96 w-auto animate-fade-in"
+              />
             </div>
-
-            <p className="font-serif text-2xl md:text-4xl italic text-primary-foreground/95 animate-fade-in stagger-4">
-              {t(language, "hero.subtitle")}
-            </p>
           </div>
 
           {/* Right side - Description and CTA */}
