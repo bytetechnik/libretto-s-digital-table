@@ -4,94 +4,352 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+} from "@/components/ui/sheet";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { t } from "@/translations";
-import { Search, Sparkles } from "lucide-react";
-import { useState, useMemo } from "react";
+import { Search, Sparkles, ChevronDown, Wine } from "lucide-react";
+import { useState, useMemo, useCallback, useEffect } from "react";
+
+// All drink section keys (order matches menu structure)
+const DRINK_SECTION_KEYS = [
+  "erfrischungsgetraenke",
+  "bierUndApfelwein",
+  "schaumweinChampagner",
+  "weissweine",
+  "roseweine",
+  "rotweine",
+  "kaffee",
+  "heissgetraenke",
+  "teeImGlas",
+  "premiumKaennchentee",
+  "aperitivo",
+  "aperitivoCampari",
+  "cocktails",
+  "malfyGin",
+  "alkoholfreieDrinks",
+  "maltWhiskey",
+  "whiskey",
+  "americanWhiskey",
+  "tequila",
+  "likoereDigestifs",
+];
 
 const Menu = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [randomDish, setRandomDish] = useState<any>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDrinksSheetOpen, setIsDrinksSheetOpen] = useState(false);
   const { language } = useLanguage();
+  const isMobile = useIsMobile();
 
-  // Menu structure with translation keys and prices
+  // Menu structure with translation keys and prices (new menu only)
   const menuStructure = [
     {
-      sectionKey: "breakfast",
+      sectionKey: "vorspeisen",
       itemKeys: [
-        { key: "stoltze", price: "6.9" },
-        { key: "goethe", price: "13.5" },
-        { key: "julesVerne", price: "12.9" },
-        { key: "shakespeare", price: "14.9" },
-        { key: "shakshuka", price: "13.5" },
-        { key: "fitness", price: "15.9" },
-        { key: "ilDolceFarNiente", price: "1 Pers. 17.5 / 2 Pers. 32.5" },
-        { key: "royale", price: "1 Pers. 18.5 / 2 Pers. 33.5" },
-        { key: "signatureLibretto", price: "1 Pers. 19.5 / 2 Pers. 37.5" },
-        { key: "hausgemachtesGranola", price: "11" },
-        { key: "porridgeVegan", price: "10" },
-        { key: "bircherMuesli", price: "10" },
-        { key: "pancakes", price: "9.9" },
-        { key: "gravedLachs", price: "9.5" },
-        { key: "kaeseVariation", price: "7.5" },
-        { key: "portionFrischkaese", price: "3" },
-        { key: "portionButter", price: "1.5" },
-        { key: "ingwerShot", price: "4" },
-        { key: "zweiEier", price: "6.5" },
-        { key: "ruehreiNatur", price: "7.5" },
-        { key: "ruehreiBacon", price: "9" },
-        { key: "ruehreiZwiebeln", price: "11" },
-        { key: "spiegeleiNatur", price: "7.5" },
-        { key: "spiegeleiBacon", price: "9" },
-        { key: "spiegeleiWuerste", price: "11" },
-        { key: "omeletteBombay", price: "15" },
-        { key: "omeletteBauernart", price: "14" },
-        { key: "omelettePariser", price: "14" },
-        { key: "omeletteMediterran", price: "13" },
-        { key: "zweiBrötchen", price: "6.5" },
-        { key: "zweiBrioche", price: "9.5" },
-        { key: "avocadoStulle", price: "14.9" },
-        { key: "avocadoStulleLachs", price: "17.9" },
-        { key: "hummusStulle", price: "14.9" },
-        { key: "capreseStulle", price: "13.9" },
+        { key: "brotButter", price: "5" },
+        { key: "roteBeteCarpaccio", price: "14" },
+        { key: "roestbrotItalianStyle", price: "14" },
+        { key: "karamellisierterZiegenkaese", price: "12" },
       ],
     },
     {
-      sectionKey: "brunch",
+      sectionKey: "suppen",
       itemKeys: [
-        { key: "mimosa", price: "8" },
-        { key: "bellini", price: "9" },
-        { key: "espressoMartini", price: "11" },
-        { key: "eggsBenedict", price: "Mit Farmerschinken 13.9 / Mit Graved Lachs 15.9 / Mit krossem Bacon 13.9 / Mit Guacamole + 2" },
-        { key: "croqueMadame", price: "14.9" },
-        { key: "croissantDeluxe", price: "13 / Mit Farmerschinken 14.9 / Mit krossem Bacon 14.9 / Mit Parmaschinken 15.9" },
+        { key: "cremigeKarottenIngwerSuppe", price: "10.5" },
+        { key: "tomatensuppe", price: "9" },
+        { key: "chefsRoteLinsensuppe", price: "10" },
       ],
     },
     {
-      sectionKey: "lunch",
+      sectionKey: "salate",
       itemKeys: [
-        { key: "tomatencremesuppe", price: "8" },
-        { key: "ilPiccoloSpuntino", price: "7.9" },
-        { key: "roestbrot", price: "14.9" },
-        { key: "tagliere", price: "11.5 (P.P)" },
-        { key: "classicCaesar", price: "16.9" },
-        { key: "ziegenkaese", price: "16.9" },
-        { key: "gartensalat", price: "15.9" },
-        { key: "mediterranerSalat", price: "15.9" },
-        { key: "bellaNonna", price: "15.9" },
-        { key: "gemischteSalat", price: "9.9" },
+        { key: "caesarSalat", price: "17.5" },
+        { key: "ziegenkaeseUndFreunde", price: "18.5" },
       ],
     },
     {
-      sectionKey: "drinks",
+      sectionKey: "pasta",
       itemKeys: [
-        { key: "aperolSpritz", price: "8.5" },
-        { key: "hugo", price: "8.5" },
-        { key: "negroni", price: "10.5" },
-        { key: "hauswein", price: "ab 5.5" },
+        { key: "rigatoniMezziOrtolana", price: "15" },
+        { key: "paccheriPistacchioEBurrata", price: "18" },
+        { key: "spaghettiGambas", price: "21" },
+        { key: "beefTagliatelle", price: "19" },
+        { key: "gnocchiRosso", price: "17" },
+        { key: "tagliatelleKokosCurry", price: "16" },
+      ],
+    },
+    {
+      sectionKey: "klassiker",
+      itemKeys: [
+        { key: "boeufBourguignon", price: "24" },
+        { key: "steakFrites", price: "23" },
+        { key: "gemuesecurry", price: "19 / Mit Hähnchen +4" },
+      ],
+    },
+    {
+      sectionKey: "extras",
+      itemKeys: [
+        { key: "pommesFrites", price: "7" },
+        { key: "suesskartoffelPommes", price: "7" },
+        { key: "truffelPommes", price: "9" },
+        { key: "grillgemuese", price: "6" },
+        { key: "gemischterSalat", price: "8" },
+      ],
+    },
+    {
+      sectionKey: "suesses",
+      itemKeys: [
+        { key: "cremeBrulee", price: "10" },
+        { key: "kaiserschmarren", price: "15" },
+        { key: "schokoSouffle", price: "12" },
+        { key: "apfelstrudel", price: "10" },
+        { key: "meringueCheesecake", price: "11" },
+      ],
+    },
+    {
+      sectionKey: "erfrischungsgetraenke",
+      itemKeys: [
+        { key: "taunusquelleNaturelle", price: "3.8 | 7.8" },
+        { key: "taunusquelleMedium", price: "3.8 | 7.8" },
+        { key: "infusedWater", price: "8" },
+        { key: "softdrinks", price: "3.9 | 5.2" },
+        { key: "saefteRapps", price: "4.9 | 5.9" },
+        { key: "thomasHenry", price: "4" },
+        { key: "hausgemachteLimonade", price: "6.9" },
+        { key: "kalteZitrone", price: "6.5" },
+      ],
+    },
+    {
+      sectionKey: "bierUndApfelwein",
+      itemKeys: [
+        { key: "bitburgerPils", price: "4 | 5" },
+        { key: "bitburgerPilsAlkoholfrei", price: "4" },
+        { key: "benediktinerWeissbier", price: "6" },
+        { key: "benediktinerWeissbierAlkoholfrei", price: "6" },
+        { key: "benediktinerDunkel", price: "6" },
+        { key: "benediktinerHelles", price: "6" },
+        { key: "benediktinerHellesAlkoholfrei", price: "6" },
+        { key: "birraMoretti", price: "5" },
+        { key: "apfelweinRapps", price: "3 | 5" },
+        { key: "bembelApfelweinColaCidre", price: "4" },
+        { key: "bembelApfelweinPfirsichCidre", price: "4" },
+      ],
+    },
+    {
+      sectionKey: "schaumweinChampagner",
+      itemKeys: [
+        { key: "carpeNoctemProseccoBrut", price: "7.5 | 35" },
+        { key: "carpeNoctemProseccoRose", price: "7.5 | 35" },
+        { key: "chandonGardenSpritz", price: "38" },
+        { key: "perrierJouetGrandBrut", price: "99" },
+        { key: "perrierJouetBlasonRose", price: "120" },
+        { key: "ruinartBrut", price: "125" },
+        { key: "ruinartRose", price: "125" },
+        { key: "moetChandonIceImperialRose", price: "125" },
+      ],
+    },
+    {
+      sectionKey: "weissweine",
+      itemKeys: [
+        { key: "sauvignonBlancSteitz", price: "9 | 31" },
+        { key: "blancDeNoirSteitz", price: "9 | 31" },
+        { key: "gelberMuskatellerGoehring", price: "9 | 31" },
+        { key: "grauburgunderGoehring", price: "9 | 31" },
+        { key: "rieslingGutsweinFendel", price: "9 | 31" },
+        { key: "luganaSanBenedettoZenato", price: "9 | 31" },
+        { key: "studioBlancPittPerrin", price: "29" },
+        { key: "fratiLuganaCadeiFrati", price: "49 | 79" },
+      ],
+    },
+    {
+      sectionKey: "roseweine",
+      itemKeys: [
+        { key: "cuveeRoseGoehring", price: "9 | 31" },
+        { key: "minutyMRose", price: "39 | 89" },
+        { key: "miravalCotesDeProvenceRose", price: "55 | 99" },
+        { key: "whisperingAngel", price: "55" },
+        { key: "alieRoseFrescobaldi", price: "10 | 35" },
+      ],
+    },
+    {
+      sectionKey: "rotweine",
+      itemKeys: [
+        { key: "rot1SpaetburgunderSteitz", price: "9.5 | 32" },
+        { key: "appassimentoRossoVeneto", price: "9.5 | 32" },
+        { key: "montepulcianoAbruzzoNovantuno", price: "9.5 | 32" },
+        { key: "primitivoIMuri", price: "9.5 | 32" },
+      ],
+    },
+    {
+      sectionKey: "kaffee",
+      itemKeys: [
+        { key: "cafeCreme", price: "3.8 | 4.9" },
+        { key: "kaennchenCafeCreme", price: "6.5" },
+        { key: "espressoDoppio", price: "3 | 4.7" },
+        { key: "espressoMacchiatoDoppio", price: "3.2 | 4.9" },
+        { key: "americano", price: "3.8" },
+        { key: "latteMacchiato", price: "5" },
+        { key: "cappuccino", price: "3.9 | 5.5" },
+        { key: "grandCafeAuLait", price: "5" },
+        { key: "flatWhite", price: "4.9" },
+        { key: "cortado", price: "4.5" },
+        { key: "icedAmericano", price: "5" },
+        { key: "icedLatte", price: "5.5" },
+        { key: "affogato", price: "5.5" },
+      ],
+    },
+    {
+      sectionKey: "heissgetraenke",
+      itemKeys: [
+        { key: "chaiLatte", price: "5.5" },
+        { key: "pumpkinSpiceLatte", price: "5.5" },
+        { key: "heisseSchokolade", price: "5" },
+      ],
+    },
+    {
+      sectionKey: "teeImGlas",
+      itemKeys: [
+        { key: "englishCeylon", price: "4.5" },
+        { key: "spicyBlackChai", price: "4.5" },
+        { key: "sonneAsienSencha", price: "4.5" },
+        { key: "kraeutergarten", price: "4.5" },
+        { key: "kamillenblueten", price: "4.5" },
+        { key: "pfefferminze", price: "4.5" },
+        { key: "rooibosVanille", price: "4.5" },
+        { key: "sommerbeeren", price: "4.5" },
+        { key: "ingwerMinzeZitrone", price: "5.5" },
+        { key: "nanaTee", price: "5" },
+      ],
+    },
+    {
+      sectionKey: "premiumKaennchentee",
+      itemKeys: [
+        { key: "darjeelingSchnorr", price: "7" },
+        { key: "assamSchnorr", price: "7" },
+        { key: "earlGreySchnorr", price: "7" },
+        { key: "buddhasGeheimnis", price: "7" },
+        { key: "paiMuTan", price: "7" },
+        { key: "japanSencha", price: "7" },
+        { key: "morgentau", price: "7" },
+        { key: "gelberPfirsich", price: "7" },
+      ],
+    },
+    {
+      sectionKey: "kleinigkeiten",
+      itemKeys: [
+        { key: "charcuteriePlatteZwei", price: "20" },
+        { key: "burrataTomate", price: "13" },
+        { key: "brotButterKleinigkeiten", price: "5" },
+        { key: "pommesFritesKleinigkeiten", price: "7" },
+      ],
+    },
+    {
+      sectionKey: "aperitivo",
+      itemKeys: [
+        { key: "aperolSpritz", price: "9.5" },
+        { key: "stGermainSpritz", price: "11" },
+        { key: "sartiSpritz", price: "9.5" },
+        { key: "lilletBerry", price: "9.5" },
+        { key: "roseTonic", price: "9.5" },
+      ],
+    },
+    {
+      sectionKey: "aperitivoCampari",
+      itemKeys: [
+        { key: "negroniCampari", price: "12" },
+        { key: "campariSpritz", price: "9.5" },
+        { key: "amalfiCampari", price: "9.5" },
+        { key: "bicicletta", price: "10" },
+      ],
+    },
+    {
+      sectionKey: "cocktails",
+      itemKeys: [
+        { key: "espressoMartini", price: "12" },
+        { key: "pinkPaloma", price: "14" },
+        { key: "rubySour", price: "12" },
+        { key: "cosmopolitan", price: "11" },
+        { key: "whiskeySour", price: "11" },
+        { key: "moscowMule", price: "11" },
+      ],
+    },
+    {
+      sectionKey: "malfyGin",
+      itemKeys: [
+        { key: "malfyOriginaleTonic", price: "12" },
+        { key: "malfyRosaGinTonic", price: "12" },
+        { key: "malfyLimone", price: "12" },
+        { key: "malfyAranciaGinTonica", price: "12" },
+      ],
+    },
+    {
+      sectionKey: "alkoholfreieDrinks",
+      itemKeys: [
+        { key: "noAperoSpritz", price: "9.5" },
+        { key: "shirleyTemple", price: "8" },
+        { key: "noGinTonic", price: "10" },
+        { key: "crodinoSpritz", price: "8.5" },
+        { key: "virginMojito", price: "9.5" },
+      ],
+    },
+    {
+      sectionKey: "maltWhiskey",
+      itemKeys: [
+        { key: "glenfiddich15Solera", price: "10" },
+        { key: "singleton12", price: "8" },
+      ],
+    },
+    {
+      sectionKey: "whiskey",
+      itemKeys: [
+        { key: "johnnieWalkerBlackLabel", price: "8" },
+        { key: "chivasRegal12", price: "1" },
+      ],
+    },
+    {
+      sectionKey: "americanWhiskey",
+      itemKeys: [
+        { key: "makersMarkBourbon", price: "7" },
+        { key: "bulleitBourbon", price: "8" },
+        { key: "wildTurkeyBourbon", price: "8" },
+      ],
+    },
+    {
+      sectionKey: "tequila",
+      itemKeys: [
+        { key: "patronSilver", price: "8" },
+        { key: "donJulioReposado", price: "10" },
+        { key: "claseAzulReposado", price: "2" },
+      ],
+    },
+    {
+      sectionKey: "likoereDigestifs",
+      itemKeys: [
+        { key: "baileys", price: "6" },
+        { key: "averna", price: "6" },
+        { key: "ramazzotti", price: "6" },
+        { key: "limoncello", price: "6" },
+        { key: "campari", price: "6" },
+        { key: "sambuca", price: "6" },
+        { key: "grandMarnier", price: "6" },
+        { key: "frangelico", price: "6" },
+        { key: "williamsBirne", price: "6" },
       ],
     },
   ];
@@ -100,7 +358,7 @@ const Menu = () => {
   const menuSections = useMemo(() => {
     return menuStructure.map((section) => {
       const sectionTitle = t(language, `menu.sections.${section.sectionKey}.title`);
-      const sectionSubtitle = section.sectionKey === "lunch" 
+const sectionSubtitle = (section.sectionKey === "suppen" || section.sectionKey === "salate" || section.sectionKey === "kaffee" || section.sectionKey === "teeImGlas" || section.sectionKey === "premiumKaennchentee" || section.sectionKey === "likoereDigestifs")
         ? t(language, `menu.sections.${section.sectionKey}.subtitle`)
         : undefined;
       
@@ -123,16 +381,60 @@ const Menu = () => {
     });
   }, [language]);
 
-  // Get all unique categories with their keys
+  // Categories: All, food sections only, then single "Drinks" entry (drink sub-sections in dropdown)
   const categories = useMemo(() => {
+    const foodSections = menuSections.filter(
+      (s) => !DRINK_SECTION_KEYS.includes(s.sectionKey)
+    );
     return [
       { key: "all", label: t(language, "menu.allCategories") },
-      ...menuSections.map(section => ({
+      ...foodSections.map((section) => ({
         key: section.sectionKey,
         label: section.title,
-      }))
+      })),
+      { key: "drinks", label: t(language, "menu.drinksCategory"), isDrinks: true },
     ];
   }, [menuSections, language]);
+
+  // Drink sections for the dropdown (same order as in menu)
+  const drinkSections = useMemo(
+    () =>
+      menuSections.filter((s) => DRINK_SECTION_KEYS.includes(s.sectionKey)),
+    [menuSections]
+  );
+
+  const scrollToSection = useCallback((sectionKey: string) => {
+    const el = document.getElementById(`section-${sectionKey}`);
+    el?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
+
+  // When a specific category is selected (not "all" or "drinks"), scroll to that section after content has rendered
+  useEffect(() => {
+    if (
+      selectedCategory &&
+      selectedCategory !== "all" &&
+      selectedCategory !== "drinks"
+    ) {
+      const id = `section-${selectedCategory}`;
+      const scroll = () => {
+        const el = document.getElementById(id);
+        el?.scrollIntoView({ behavior: "smooth", block: "start" });
+      };
+      const t = requestAnimationFrame(() => {
+        requestAnimationFrame(scroll);
+      });
+      return () => cancelAnimationFrame(t);
+    }
+  }, [selectedCategory]);
+
+  const handleSelectDrinkSection = useCallback(
+    (sectionKey: string) => {
+      setSelectedCategory(sectionKey);
+      scrollToSection(sectionKey);
+      setIsDrinksSheetOpen(false);
+    },
+    [scrollToSection]
+  );
 
   // Filter menu items based on search and category
   const filteredSections = useMemo(() => {
@@ -173,6 +475,13 @@ const Menu = () => {
           <p className="font-sans text-lg leading-relaxed max-w-2xl mx-auto">
             {t(language, "menu.subtitle")}
           </p>
+          <div className="mt-10 pt-8 border-t border-primary-foreground/20 max-w-2xl mx-auto space-y-3">
+            {t(language, "menu.intro").split("\n").map((line, i) => (
+              <p key={i} className="font-sans text-sm md:text-base leading-relaxed opacity-95">
+                {line}
+              </p>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -205,16 +514,97 @@ const Menu = () => {
 
           {/* Category Filter */}
           <div className="flex flex-wrap gap-2 mt-6 justify-center">
-            {categories.map((category) => (
-              <Button
-                key={category.key}
-                variant={selectedCategory === category.key ? "default" : "outline"}
-                onClick={() => setSelectedCategory(category.key)}
-                className="font-sans text-xs sm:text-sm px-3 py-2"
-              >
-                {category.label}
-              </Button>
-            ))}
+            {categories.map((category) => {
+              const isDrinksDropdown = "isDrinks" in category && category.isDrinks;
+              const isDrinksSelected =
+                selectedCategory === "drinks" ||
+                DRINK_SECTION_KEYS.includes(selectedCategory);
+
+              if (isDrinksDropdown) {
+                const drinksTrigger = (
+                  <Button
+                    variant={isDrinksSelected ? "default" : "outline"}
+                    className="font-sans text-xs sm:text-sm px-3 py-2 min-h-[44px] sm:min-h-0 touch-manipulation"
+                    onClick={isMobile ? () => setIsDrinksSheetOpen(true) : undefined}
+                  >
+                    {category.label}
+                    <ChevronDown className={`ml-1 h-4 w-4 opacity-70 ${isMobile ? "shrink-0" : ""}`} aria-hidden />
+                  </Button>
+                );
+
+                if (isMobile) {
+                  return (
+                    <span key="drinks">
+                      {drinksTrigger}
+                      <Sheet open={isDrinksSheetOpen} onOpenChange={setIsDrinksSheetOpen}>
+                        <SheetContent side="bottom" className="rounded-t-2xl pb-8 max-h-[85vh] flex flex-col">
+                          <SheetHeader className="text-left space-y-1 pb-4 border-b border-border">
+                            <SheetTitle className="font-serif text-xl flex items-center gap-2">
+                              <Wine className="h-5 w-5 text-muted-foreground" />
+                              {category.label}
+                            </SheetTitle>
+                            <SheetDescription className="text-sm">
+                              {t(language, "menu.drinksSelectHint")}
+                            </SheetDescription>
+                          </SheetHeader>
+                          <nav
+                            className="flex-1 overflow-y-auto py-4 -mx-2 px-2"
+                            aria-label={t(language, "menu.drinksCategory")}
+                          >
+                            <ul className="space-y-0.5">
+                              {drinkSections.map((section) => (
+                                <li key={section.sectionKey}>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleSelectDrinkSection(section.sectionKey)}
+                                    className="w-full text-left font-sans text-base py-3.5 px-4 rounded-lg hover:bg-accent hover:text-accent-foreground active:bg-accent/80 transition-colors min-h-[48px] flex items-center touch-manipulation"
+                                  >
+                                    {section.title}
+                                  </button>
+                                </li>
+                              ))}
+                            </ul>
+                          </nav>
+                        </SheetContent>
+                      </Sheet>
+                    </span>
+                  );
+                }
+
+                return (
+                  <DropdownMenu key="drinks">
+                    <DropdownMenuTrigger asChild>{drinksTrigger}</DropdownMenuTrigger>
+                    <DropdownMenuContent
+                      align="center"
+                      side="bottom"
+                      sideOffset={8}
+                      className="min-w-[min(280px,calc(100vw-2rem))] max-h-[min(70vh,400px)] overflow-y-auto p-1.5 rounded-xl shadow-lg"
+                    >
+                      {drinkSections.map((section) => (
+                        <DropdownMenuItem
+                          key={section.sectionKey}
+                          onClick={() => handleSelectDrinkSection(section.sectionKey)}
+                          className="py-2.5 px-3 text-sm rounded-md cursor-pointer font-sans focus:bg-accent"
+                        >
+                          {section.title}
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                );
+              }
+
+              return (
+                <Button
+                  key={category.key}
+                  variant={selectedCategory === category.key ? "default" : "outline"}
+                  onClick={() => setSelectedCategory(category.key)}
+                  className="font-sans text-xs sm:text-sm px-3 py-2"
+                >
+                  {category.label}
+                </Button>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -234,7 +624,7 @@ const Menu = () => {
               const { ref, isVisible } = useScrollAnimation(0.1);
               
               return (
-                <div ref={ref} key={section.title}>
+                <div ref={ref} id={`section-${section.sectionKey}`} key={section.title} className="scroll-mt-28">
                   <h2 className={`font-serif text-4xl md:text-5xl text-foreground mb-4 text-center animate-fade-up ${isVisible ? 'visible' : ''}`}>
                     {section.title}
                   </h2>
@@ -317,6 +707,15 @@ const Menu = () => {
         </div>
       </section>
 
+      {/* Menu disclaimer */}
+      <section className="py-10 px-4 border-t border-border">
+        <div className="container mx-auto max-w-4xl">
+          <p className="font-sans text-sm text-muted-foreground text-center leading-relaxed max-w-2xl mx-auto">
+            {t(language, "menu.disclaimer")}
+          </p>
+        </div>
+      </section>
+
       {/* Random Dish Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="sm:max-w-md">
@@ -332,7 +731,7 @@ const Menu = () => {
           {randomDish && (
             <div className="space-y-4 pt-4">
               <div className="text-xs uppercase tracking-wider text-accent font-semibold">
-                {t(language, "menu.randomDishCategory")}
+                {t(language, "menu.randomDishCategory")}: {randomDish.category}
               </div>
               <h3 className="font-serif text-2xl text-foreground">
                 {randomDish.name}
