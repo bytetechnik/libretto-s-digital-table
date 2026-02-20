@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Instagram, Languages } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -9,6 +9,15 @@ import logo from "@/assets/libretto-logo.jpeg";
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { language, setLanguage } = useLanguage();
+  const location = useLocation();
+
+  const handleNavClick = (path: string) => (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (location.pathname === path) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    if (isOpen) setIsOpen(false);
+  };
 
   return (
     <nav className="fixed top-0 w-full bg-[#0f2d1d] backdrop-blur-sm z-50 border-b border-primary/20">
@@ -20,10 +29,10 @@ const Navigation = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link to="/" className="text-primary-foreground hover:text-brand-beige transition-colors font-sans text-sm tracking-wide">
+            <Link to="/" onClick={handleNavClick("/")} className="text-primary-foreground hover:text-brand-beige transition-colors font-sans text-sm tracking-wide">
               {t(language, "nav.home")}
             </Link>
-            <Link to="/menu" className="text-primary-foreground hover:text-brand-beige transition-colors font-sans text-sm tracking-wide">
+            <Link to="/menu" onClick={handleNavClick("/menu")} className="text-primary-foreground hover:text-brand-beige transition-colors font-sans text-sm tracking-wide">
               {t(language, "nav.menu")}
             </Link>
             <a
@@ -83,14 +92,14 @@ const Navigation = () => {
             <Link
               to="/"
               className="block text-primary-foreground hover:text-brand-beige transition-colors font-sans text-sm tracking-wide"
-              onClick={() => setIsOpen(false)}
+              onClick={handleNavClick("/")}
             >
               {t(language, "nav.home")}
             </Link>
             <Link
               to="/menu"
               className="block text-primary-foreground hover:text-brand-beige transition-colors font-sans text-sm tracking-wide"
-              onClick={() => setIsOpen(false)}
+              onClick={handleNavClick("/menu")}
             >
               {t(language, "nav.menu")}
             </Link>
