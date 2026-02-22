@@ -21,14 +21,19 @@ import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { t } from "@/translations";
-import { Search, Sparkles, ChevronDown, Wine } from "lucide-react";
+import { Search, Sparkles, ChevronDown, Wine, Coffee, UtensilsCrossed } from "lucide-react";
 import { useState, useMemo, useCallback, useEffect } from "react";
+
+type SuggestionItem = { name: string; description?: string; price: string; category: string };
 
 // All drink section keys (order matches menu structure)
 const DRINK_SECTION_KEYS = [
   "erfrischungsgetraenke",
+  "frischGepresste",
+  "smoothies",
   "bierUndApfelwein",
   "schaumweinChampagner",
+  "champagner",
   "weissweine",
   "roseweine",
   "rotweine",
@@ -48,17 +53,192 @@ const DRINK_SECTION_KEYS = [
   "likoereDigestifs",
 ];
 
+// Get current hour in German time (Europe/Berlin)
+const getGermanHour = (): number => {
+  const now = new Date();
+  const formatter = new Intl.DateTimeFormat("de-DE", { timeZone: "Europe/Berlin", hour: "numeric", hour12: false });
+  return parseInt(formatter.format(now), 10);
+};
+
+// Breakfast & Brunch menu (only)
+const BREAKFAST_MENU_STRUCTURE = [
+  {
+    sectionKey: "herzhaftesFruehstueck",
+    itemKeys: [
+      { key: "leMax", price: "15" },
+      { key: "avocadoUndEi", price: "16" },
+      { key: "uovaInPurgatorio", price: "13" },
+      { key: "briocheLox", price: "14" },
+      { key: "croqueMadame", price: "15" },
+      { key: "eggsBenedict", price: "16" },
+      { key: "steakAndEggs", price: "19" },
+    ],
+  },
+  {
+    sectionKey: "bowlsMuesli",
+    itemKeys: [
+      { key: "acaiBowl", price: "13" },
+      { key: "granolaMuesli", price: "11" },
+      { key: "apfelZimtPorridge", price: "10" },
+    ],
+  },
+  {
+    sectionKey: "eierspeisenOmelettes",
+    itemKeys: [
+      { key: "ruehreiSpiegelei", price: "7.5 | 9.5 | 10" },
+      { key: "zweiEierImGlas", price: "6.5" },
+      { key: "mumbaiMorningOmelette", price: "15" },
+      { key: "bauernOmelette", price: "14" },
+      { key: "sophiaLorenOmelette", price: "14" },
+    ],
+  },
+  {
+    sectionKey: "fruehstueckSuesses",
+    itemKeys: [
+      { key: "pancakesCallebaut", price: "11" },
+      { key: "klassischeWaffeln", price: "8" },
+      { key: "frenchToast", price: "12" },
+    ],
+  },
+  {
+    sectionKey: "fruehstueckSets",
+    itemKeys: [
+      { key: "julesVerne", price: "13" },
+      { key: "goethe", price: "14" },
+      { key: "fitness", price: "16" },
+      { key: "signatureEtagere", price: "40" },
+      { key: "shakespeare", price: "15" },
+      { key: "stoltze", price: "6.5" },
+      { key: "levante", price: "16" },
+      { key: "extras", price: "—" },
+      { key: "zweiHalbeBelegteBroetchen", price: "6.5" },
+    ],
+  },
+  {
+    sectionKey: "kaffee",
+    itemKeys: [
+      { key: "cafeCreme", price: "3.8 | 4.9" },
+      { key: "kaennchenCafeCreme", price: "6.5" },
+      { key: "espressoDoppio", price: "3 | 4.7" },
+      { key: "espressoMacchiatoDoppio", price: "3.2 | 4.9" },
+      { key: "macchiato", price: "3.8" },
+      { key: "americano", price: "3.8" },
+      { key: "latteMacchiato", price: "5" },
+      { key: "cappuccino", price: "3.9 | 5.5" },
+      { key: "grandCafeAuLait", price: "5" },
+      { key: "flatWhite", price: "4.9" },
+      { key: "cortado", price: "4.5" },
+      { key: "icedAmericano", price: "5" },
+      { key: "icedLatte", price: "5.5" },
+    ],
+  },
+  {
+    sectionKey: "brunchDrinks",
+    itemKeys: [
+      { key: "mimosa", price: "8" },
+      { key: "ginBellini", price: "10" },
+      { key: "espressoMartiniBrunch", price: "12" },
+      { key: "mimosaTable", price: "49" },
+    ],
+  },
+  {
+    sectionKey: "champagner",
+    itemKeys: [
+      { key: "perrierJouetGrandBrut", price: "99" },
+      { key: "perrierJouetBlasonRose", price: "120" },
+      { key: "ruinartBrut", price: "125" },
+      { key: "ruinartRose", price: "155" },
+      { key: "moetChandonIceImperialRose", price: "125" },
+    ],
+  },
+  {
+    sectionKey: "schaumweinChampagner",
+    itemKeys: [
+      { key: "carpeNoctemProseccoBrut", price: "7.5 | 35" },
+      { key: "carpeNoctemProseccoRose", price: "7.5 | 35" },
+      { key: "chandonGardenSpritz", price: "38" },
+    ],
+  },
+  {
+    sectionKey: "smoothies",
+    itemKeys: [
+      { key: "purpleAcai", price: "7.5" },
+      { key: "palmGarden", price: "7.5" },
+      { key: "pescaDOro", price: "7.5" },
+      { key: "optionalIngwer", price: "+ 0,5" },
+    ],
+  },
+  {
+    sectionKey: "frischGepresste",
+    itemKeys: [
+      { key: "orangensaft", price: "6.5" },
+      { key: "pinkGrapefruitsaft", price: "6.5" },
+    ],
+  },
+  {
+    sectionKey: "erfrischungsgetraenke",
+    itemKeys: [
+      { key: "taunusquelleNaturelle", price: "3.8 | 7.8" },
+      { key: "taunusquelleMedium", price: "3.8 | 7.8" },
+      { key: "infusedWater", price: "8" },
+      { key: "softdrinks", price: "3.9 | 5.2" },
+      { key: "saefteRapps", price: "4.9 | 5.9" },
+      { key: "thomasHenry", price: "4" },
+      { key: "hausgemachteLimonade", price: "6.9" },
+      { key: "kalteZitrone", price: "6.5" },
+    ],
+  },
+  {
+    sectionKey: "premiumKaennchentee",
+    itemKeys: [
+      { key: "darjeelingSchnorr", price: "7" },
+      { key: "assamSchnorr", price: "7" },
+      { key: "earlGreySchnorr", price: "7" },
+      { key: "buddhasGeheimnis", price: "7" },
+      { key: "paiMuTan", price: "7" },
+      { key: "japanSencha", price: "7" },
+      { key: "morgentau", price: "7" },
+      { key: "gelberPfirsich", price: "7" },
+    ],
+  },
+  {
+    sectionKey: "teeImGlas",
+    itemKeys: [
+      { key: "englishCeylon", price: "4.5" },
+      { key: "spicyBlackChai", price: "4.5" },
+      { key: "sonneAsienSencha", price: "4.5" },
+      { key: "kraeutergarten", price: "4.5" },
+      { key: "kamillenblueten", price: "4.5" },
+      { key: "pfefferminze", price: "4.5" },
+      { key: "rooibosVanille", price: "4.5" },
+      { key: "sommerbeeren", price: "4.5" },
+      { key: "ingwerMinzeZitrone", price: "5.5" },
+      { key: "nanaTee", price: "5" },
+    ],
+  },
+  {
+    sectionKey: "heissgetraenke",
+    itemKeys: [
+      { key: "chaiLatte", price: "5.5" },
+      { key: "pumpkinSpiceLatte", price: "5.5" },
+      { key: "heisseSchokolade", price: "5" },
+      { key: "mochachino", price: "6" },
+    ],
+  },
+];
+
 const Menu = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [randomDish, setRandomDish] = useState<any>(null);
+  const [menuPart, setMenuPart] = useState<"breakfast" | "speisen">("breakfast");
+  const [randomSuggestion, setRandomSuggestion] = useState<{ food: SuggestionItem; drink: SuggestionItem } | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDrinksSheetOpen, setIsDrinksSheetOpen] = useState(false);
   const { language } = useLanguage();
   const isMobile = useIsMobile();
 
-  // Menu structure with translation keys and prices (new menu only)
-  const menuStructure = [
+  // SPEISEN & GETRÄNKE: all food sections + drinks (no breakfast)
+  const SPEISEN_GETRAENKE_MENU_STRUCTURE = [
     {
       sectionKey: "vorspeisen",
       itemKeys: [
@@ -136,6 +316,22 @@ const Menu = () => {
       ],
     },
     {
+      sectionKey: "frischGepresste",
+      itemKeys: [
+        { key: "orangensaft", price: "6.5" },
+        { key: "pinkGrapefruitsaft", price: "6.5" },
+      ],
+    },
+    {
+      sectionKey: "smoothies",
+      itemKeys: [
+        { key: "purpleAcai", price: "7.5" },
+        { key: "palmGarden", price: "7.5" },
+        { key: "pescaDOro", price: "7.5" },
+        { key: "optionalIngwer", price: "+ 0,5" },
+      ],
+    },
+    {
       sectionKey: "bierUndApfelwein",
       itemKeys: [
         { key: "bitburgerPils", price: "4 | 5" },
@@ -157,10 +353,15 @@ const Menu = () => {
         { key: "carpeNoctemProseccoBrut", price: "7.5 | 35" },
         { key: "carpeNoctemProseccoRose", price: "7.5 | 35" },
         { key: "chandonGardenSpritz", price: "38" },
+      ],
+    },
+    {
+      sectionKey: "champagner",
+      itemKeys: [
         { key: "perrierJouetGrandBrut", price: "99" },
         { key: "perrierJouetBlasonRose", price: "120" },
         { key: "ruinartBrut", price: "125" },
-        { key: "ruinartRose", price: "125" },
+        { key: "ruinartRose", price: "155" },
         { key: "moetChandonIceImperialRose", price: "125" },
       ],
     },
@@ -203,6 +404,7 @@ const Menu = () => {
         { key: "kaennchenCafeCreme", price: "6.5" },
         { key: "espressoDoppio", price: "3 | 4.7" },
         { key: "espressoMacchiatoDoppio", price: "3.2 | 4.9" },
+        { key: "macchiato", price: "3.8" },
         { key: "americano", price: "3.8" },
         { key: "latteMacchiato", price: "5" },
         { key: "cappuccino", price: "3.9 | 5.5" },
@@ -220,6 +422,7 @@ const Menu = () => {
         { key: "chaiLatte", price: "5.5" },
         { key: "pumpkinSpiceLatte", price: "5.5" },
         { key: "heisseSchokolade", price: "5" },
+        { key: "mochachino", price: "6" },
       ],
     },
     {
@@ -354,11 +557,50 @@ const Menu = () => {
     },
   ];
 
+  const currentMenuStructure = menuPart === "breakfast" ? BREAKFAST_MENU_STRUCTURE : SPEISEN_GETRAENKE_MENU_STRUCTURE;
+
+  // Combined structure (breakfast + speisen) for search: merge by sectionKey, breakfast order first then speisen-only
+  const combinedMenuStructure = useMemo(() => {
+    const merged = new Map<string, { sectionKey: string; itemKeys: Array<{ key: string; price: string }> }>();
+    for (const section of BREAKFAST_MENU_STRUCTURE) {
+      merged.set(section.sectionKey, { sectionKey: section.sectionKey, itemKeys: [...section.itemKeys] });
+    }
+    for (const section of SPEISEN_GETRAENKE_MENU_STRUCTURE) {
+      const existing = merged.get(section.sectionKey);
+      if (existing) {
+        const keys = new Set(existing.itemKeys.map((i) => i.key));
+        for (const item of section.itemKeys) {
+          if (!keys.has(item.key)) {
+            existing.itemKeys.push(item);
+            keys.add(item.key);
+          }
+        }
+      } else {
+        merged.set(section.sectionKey, { sectionKey: section.sectionKey, itemKeys: [...section.itemKeys] });
+      }
+    }
+    const result: Array<{ sectionKey: string; itemKeys: Array<{ key: string; price: string }> }> = [];
+    for (const section of BREAKFAST_MENU_STRUCTURE) {
+      result.push(merged.get(section.sectionKey)!);
+    }
+    for (const section of SPEISEN_GETRAENKE_MENU_STRUCTURE) {
+      if (!result.some((s) => s.sectionKey === section.sectionKey)) {
+        result.push(merged.get(section.sectionKey)!);
+      }
+    }
+    return result;
+  }, []);
+
+  // When searching, show all food menus; when not searching, show current tab only
+  const structureForDisplay = searchTerm.trim()
+    ? combinedMenuStructure
+    : currentMenuStructure;
+
   // Generate menu sections with translations
   const menuSections = useMemo(() => {
-    return menuStructure.map((section) => {
+    return structureForDisplay.map((section) => {
       const sectionTitle = t(language, `menu.sections.${section.sectionKey}.title`);
-const sectionSubtitle = (section.sectionKey === "suppen" || section.sectionKey === "salate" || section.sectionKey === "kaffee" || section.sectionKey === "teeImGlas" || section.sectionKey === "premiumKaennchentee" || section.sectionKey === "likoereDigestifs")
+const sectionSubtitle = (section.sectionKey === "suppen" || section.sectionKey === "salate" || section.sectionKey === "eierspeisenOmelettes" || section.sectionKey === "kaffee" || section.sectionKey === "teeImGlas" || section.sectionKey === "premiumKaennchentee" || section.sectionKey === "frischGepresste" || section.sectionKey === "smoothies" || section.sectionKey === "likoereDigestifs")
         ? t(language, `menu.sections.${section.sectionKey}.subtitle`)
         : undefined;
       
@@ -379,7 +621,7 @@ const sectionSubtitle = (section.sectionKey === "suppen" || section.sectionKey =
         items,
       };
     });
-  }, [language]);
+  }, [language, structureForDisplay]);
 
   // Categories: All, food sections only, then single "Drinks" entry (drink sub-sections in dropdown)
   const categories = useMemo(() => {
@@ -453,30 +695,90 @@ const sectionSubtitle = (section.sectionKey === "suppen" || section.sectionKey =
       .filter(section => section.items.length > 0);
   }, [searchTerm, selectedCategory, menuSections]);
 
-  // Get random dish
+  // Build flat list of translated items from a menu structure (array of { sectionKey, itemKeys })
+  const buildTranslatedItems = (
+    structure: Array<{ sectionKey: string; itemKeys: Array<{ key: string; price: string }> }>
+  ): SuggestionItem[] => {
+    return structure.flatMap((section) => {
+      const sectionTitle = t(language, `menu.sections.${section.sectionKey}.title`);
+      return section.itemKeys.map((item) => ({
+        name: t(language, `menu.sections.${section.sectionKey}.items.${item.key}.name`),
+        description: t(language, `menu.sections.${section.sectionKey}.items.${item.key}.description`),
+        price: item.price,
+        category: sectionTitle,
+      }));
+    });
+  };
+
+  // Get random suggestion: 1 food + 1 drink. 06:00–12:00 German time = Breakfast & Brunch only; after 12 = both menus.
   const getRandomDish = () => {
-    const allItems = menuSections.flatMap(section => 
-      section.items.map(item => ({ ...item, category: section.title }))
+    const hour = getGermanHour();
+    const isBreakfastTime = hour >= 6 && hour < 12;
+
+    const breakfastFoodSections = BREAKFAST_MENU_STRUCTURE.filter(
+      (s) => !DRINK_SECTION_KEYS.includes(s.sectionKey)
     );
-    const randomIndex = Math.floor(Math.random() * allItems.length);
-    setRandomDish(allItems[randomIndex]);
+    const breakfastDrinkSections = BREAKFAST_MENU_STRUCTURE.filter((s) =>
+      DRINK_SECTION_KEYS.includes(s.sectionKey)
+    );
+    const speisenFoodSections = SPEISEN_GETRAENKE_MENU_STRUCTURE.filter(
+      (s) => !DRINK_SECTION_KEYS.includes(s.sectionKey)
+    );
+    const speisenDrinkSections = SPEISEN_GETRAENKE_MENU_STRUCTURE.filter((s) =>
+      DRINK_SECTION_KEYS.includes(s.sectionKey)
+    );
+
+    const foodStructure = isBreakfastTime
+      ? breakfastFoodSections
+      : [...breakfastFoodSections, ...speisenFoodSections];
+    const drinkStructure = isBreakfastTime
+      ? breakfastDrinkSections
+      : (() => {
+          const merged = new Map<string, { sectionKey: string; itemKeys: Array<{ key: string; price: string }> }>();
+          for (const section of [...breakfastDrinkSections, ...speisenDrinkSections]) {
+            const existing = merged.get(section.sectionKey);
+            if (existing) {
+              const existingKeys = new Set(existing.itemKeys.map((i) => i.key));
+              for (const item of section.itemKeys) {
+                if (!existingKeys.has(item.key)) {
+                  existing.itemKeys.push(item);
+                  existingKeys.add(item.key);
+                }
+              }
+            } else {
+              merged.set(section.sectionKey, { sectionKey: section.sectionKey, itemKeys: [...section.itemKeys] });
+            }
+          }
+          return Array.from(merged.values());
+        })();
+
+    const foodItems = buildTranslatedItems(foodStructure);
+    const drinkItems = buildTranslatedItems(drinkStructure);
+    if (foodItems.length === 0 || drinkItems.length === 0) {
+      setRandomSuggestion(null);
+      setIsDialogOpen(true);
+      return;
+    }
+    const food = foodItems[Math.floor(Math.random() * foodItems.length)];
+    const drink = drinkItems[Math.floor(Math.random() * drinkItems.length)];
+    setRandomSuggestion({ food, drink });
     setIsDialogOpen(true);
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overflow-x-hidden">
       <Navigation />
 
       {/* Header */}
-      <section className="pt-32 pb-16 px-4 bg-primary text-primary-foreground">
+      <section className="pt-24 sm:pt-28 md:pt-32 pb-10 sm:pb-14 md:pb-16 px-4 bg-primary text-primary-foreground">
         <div className="container mx-auto max-w-4xl text-center animate-fade-in">
-          <h1 className="font-serif text-6xl md:text-7xl font-light mb-6">{t(language, "menu.title")}</h1>
-          <div className="w-24 h-0.5 bg-primary-foreground mx-auto mb-8" />
-          <p className="font-sans text-lg leading-relaxed max-w-2xl mx-auto">
+          <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light mb-4 md:mb-6">{t(language, "menu.title")}</h1>
+          <div className="w-24 h-0.5 bg-primary-foreground mx-auto mb-6 md:mb-8" />
+          <p className="font-sans text-base sm:text-lg leading-relaxed max-w-2xl mx-auto px-0">
             {t(language, "menu.subtitle")}
           </p>
-          <div className="mt-10 pt-8 border-t border-primary-foreground/20 max-w-2xl mx-auto space-y-3">
-            {t(language, "menu.intro").split("\n").map((line, i) => (
+          <div className="mt-8 md:mt-10 pt-6 md:pt-8 border-t border-primary-foreground/20 max-w-2xl mx-auto space-y-2 md:space-y-3">
+            {t(language, menuPart === "breakfast" ? "menu.introBreakfast" : "menu.intro").split("\n").map((line, i) => (
               <p key={i} className="font-sans text-sm md:text-base leading-relaxed opacity-95">
                 {line}
               </p>
@@ -485,19 +787,119 @@ const sectionSubtitle = (section.sectionKey === "suppen" || section.sectionKey =
         </div>
       </section>
 
-      {/* Search and Filter Section */}
-      <section className="py-8 px-4 bg-secondary/20 border-b border-border">
+      {/* Menu part tabs: Breakfast & Brunch | Speisen & Getränke (card style with icons) */}
+      <section className="pt-4 sm:pt-6 pb-6 sm:pb-8 px-4 border-b border-border bg-background">
         <div className="container mx-auto max-w-4xl">
-          <div className="flex flex-col gap-4 items-stretch">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 max-w-2xl mx-auto">
+            <Card
+              role="button"
+              tabIndex={0}
+              onClick={() => {
+                setMenuPart("breakfast");
+                setSelectedCategory("all");
+                requestAnimationFrame(() => {
+                  requestAnimationFrame(() => {
+                    document.getElementById("menu-category-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                  });
+                });
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  setMenuPart("breakfast");
+                  setSelectedCategory("all");
+                  requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                      document.getElementById("menu-category-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                    });
+                  });
+                }
+              }}
+              className={`cursor-pointer transition-all duration-200 hover:shadow-md focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
+                menuPart === "breakfast"
+                  ? "border-primary bg-primary/5 shadow-sm ring-1 ring-primary/20"
+                  : "border-border hover:border-primary/50 hover:bg-muted/50"
+              }`}
+            >
+              <div className="p-4 sm:p-5 flex flex-col sm:flex-row items-center gap-3 sm:gap-4 text-center sm:text-left min-h-[72px] sm:min-h-0">
+                <div className={`flex-shrink-0 w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center ${
+                  menuPart === "breakfast" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+                }`}>
+                  <Coffee className="h-5 w-5 sm:h-6 sm:w-6" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-serif text-base sm:text-lg font-medium text-foreground">
+                    {t(language, "menu.menuPartBreakfast")}
+                  </h3>
+                  <p className="font-sans text-xs text-muted-foreground mt-0.5">
+                    {t(language, "menu.menuPartBreakfastSubtitle")}
+                  </p>
+                </div>
+              </div>
+            </Card>
+            <Card
+              role="button"
+              tabIndex={0}
+              onClick={() => {
+                setMenuPart("speisen");
+                setSelectedCategory("all");
+                requestAnimationFrame(() => {
+                  requestAnimationFrame(() => {
+                    document.getElementById("menu-category-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                  });
+                });
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  setMenuPart("speisen");
+                  setSelectedCategory("all");
+                  requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                      document.getElementById("menu-category-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                    });
+                  });
+                }
+              }}
+              className={`cursor-pointer transition-all duration-200 hover:shadow-md focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
+                menuPart === "speisen"
+                  ? "border-primary bg-primary/5 shadow-sm ring-1 ring-primary/20"
+                  : "border-border hover:border-primary/50 hover:bg-muted/50"
+              }`}
+            >
+              <div className="p-4 sm:p-5 flex flex-col sm:flex-row items-center gap-3 sm:gap-4 text-center sm:text-left min-h-[72px] sm:min-h-0">
+                <div className={`flex-shrink-0 w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center ${
+                  menuPart === "speisen" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+                }`}>
+                  <UtensilsCrossed className="h-5 w-5 sm:h-6 sm:w-6" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-serif text-base sm:text-lg font-medium text-foreground">
+                    {t(language, "menu.menuPartSpeisen")}
+                  </h3>
+                  <p className="font-sans text-xs text-muted-foreground mt-0.5">
+                    {t(language, "menu.menuPartSpeisenSubtitle")}
+                  </p>
+                </div>
+              </div>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Search and Filter Section */}
+      <section id="menu-category-section" className="py-5 sm:py-6 md:py-8 px-4 bg-secondary/20 border-b border-border scroll-mt-24 sm:scroll-mt-28">
+        <div className="container mx-auto max-w-4xl">
+          <div className="flex flex-col gap-3 sm:gap-4 items-stretch">
             {/* Search Bar */}
             <div className="relative w-full">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
               <Input
                 type="text"
                 placeholder={t(language, "menu.search")}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 bg-background"
+                className="pl-10 bg-background min-h-[44px] sm:min-h-[40px] text-base sm:text-sm"
               />
             </div>
 
@@ -505,15 +907,15 @@ const sectionSubtitle = (section.sectionKey === "suppen" || section.sectionKey =
             <Button
               onClick={getRandomDish}
               size="lg"
-              className="bg-accent hover:bg-accent/90 text-accent-foreground font-sans tracking-wide group w-full md:w-auto md:self-center"
+              className="bg-accent hover:bg-accent/90 text-accent-foreground font-sans tracking-wide group w-full md:w-auto md:self-center min-h-[48px] touch-manipulation"
             >
-              <Sparkles className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
+              <Sparkles className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform shrink-0" />
               {t(language, "menu.surprise")}
             </Button>
           </div>
 
           {/* Category Filter */}
-          <div className="flex flex-wrap gap-2 mt-6 justify-center">
+          <div className="flex flex-wrap gap-2 mt-4 sm:mt-6 justify-center">
             {categories.map((category) => {
               const isDrinksDropdown = "isDrinks" in category && category.isDrinks;
               const isDrinksSelected =
@@ -599,7 +1001,7 @@ const sectionSubtitle = (section.sectionKey === "suppen" || section.sectionKey =
                   key={category.key}
                   variant={selectedCategory === category.key ? "default" : "outline"}
                   onClick={() => setSelectedCategory(category.key)}
-                  className="font-sans text-xs sm:text-sm px-3 py-2"
+                  className="font-sans text-xs sm:text-sm px-3 py-2 min-h-[44px] sm:min-h-0 touch-manipulation"
                 >
                   {category.label}
                 </Button>
@@ -610,11 +1012,11 @@ const sectionSubtitle = (section.sectionKey === "suppen" || section.sectionKey =
       </section>
 
       {/* Menu Sections */}
-      <section className="py-16 px-4">
-        <div className="container mx-auto max-w-4xl space-y-16">
+      <section className="py-10 sm:py-12 md:py-16 px-4">
+        <div className="container mx-auto max-w-4xl space-y-10 sm:space-y-12 md:space-y-16">
           {filteredSections.length === 0 ? (
-            <div className="text-center py-16">
-              <p className="text-muted-foreground text-lg">
+            <div className="text-center py-12 sm:py-16">
+              <p className="text-muted-foreground text-base sm:text-lg px-4">
                 {t(language, "menu.noResults")}
               </p>
             </div>
@@ -624,17 +1026,17 @@ const sectionSubtitle = (section.sectionKey === "suppen" || section.sectionKey =
               const { ref, isVisible } = useScrollAnimation(0.1);
               
               return (
-                <div ref={ref} id={`section-${section.sectionKey}`} key={section.title} className="scroll-mt-28">
-                  <h2 className={`font-serif text-4xl md:text-5xl text-foreground mb-4 text-center animate-fade-up ${isVisible ? 'visible' : ''}`}>
+                <div ref={ref} id={`section-${section.sectionKey}`} key={section.title} className="scroll-mt-24 sm:scroll-mt-28">
+                  <h2 className={`font-serif text-3xl sm:text-4xl md:text-5xl text-foreground mb-3 sm:mb-4 text-center animate-fade-up ${isVisible ? 'visible' : ''}`}>
                     {section.title}
                   </h2>
                   {section.subtitle && (
-                    <p className={`font-sans text-sm md:text-base text-muted-foreground mb-8 text-center italic animate-fade-up ${isVisible ? 'visible' : ''}`}>
+                    <p className={`font-sans text-sm md:text-base text-muted-foreground mb-6 sm:mb-8 text-center italic animate-fade-up px-2 ${isVisible ? 'visible' : ''}`}>
                       {section.subtitle}
                     </p>
                   )}
-                  {!section.subtitle && <div className="mb-8" />}
-                  <div className="space-y-6">
+                  {!section.subtitle && <div className="mb-6 sm:mb-8" />}
+                  <div className="space-y-4 sm:space-y-6">
                     {section.items.map((item, itemIndex) => (
                       <div
                         key={item.name}
@@ -643,17 +1045,17 @@ const sectionSubtitle = (section.sectionKey === "suppen" || section.sectionKey =
                       >
                         <Card className="p-4 sm:p-6 bg-card hover:shadow-md transition-shadow">
                           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 sm:gap-4">
-                            <div className="flex-1">
-                              <h3 className="font-serif text-lg sm:text-xl md:text-2xl text-foreground mb-2">
+                            <div className="flex-1 min-w-0">
+                              <h3 className="font-serif text-base sm:text-lg md:text-xl lg:text-2xl text-foreground mb-1.5 sm:mb-2 break-words">
                                 {item.name}
                               </h3>
                               {item.description && (
-                                <p className="font-sans text-sm text-muted-foreground leading-relaxed">
+                                <p className="font-sans text-sm text-muted-foreground leading-relaxed break-words">
                                   {item.description}
                                 </p>
                               )}
                             </div>
-                            <div className="font-sans font-medium text-foreground text-left sm:text-right sm:min-w-[120px] md:min-w-[160px]">
+                            <div className="font-sans font-medium text-foreground text-left sm:text-right sm:min-w-[100px] md:min-w-[120px] shrink-0">
                               {item.price.includes("/") ? (
                                 <div className="space-y-1">
                                   {item.price.split(" / ").map((priceOption, idx) => {
@@ -708,9 +1110,9 @@ const sectionSubtitle = (section.sectionKey === "suppen" || section.sectionKey =
       </section>
 
       {/* Menu disclaimer */}
-      <section className="py-10 px-4 border-t border-border">
+      <section className="py-8 sm:py-10 px-4 border-t border-border">
         <div className="container mx-auto max-w-4xl">
-          <p className="font-sans text-sm text-muted-foreground text-center leading-relaxed max-w-2xl mx-auto">
+          <p className="font-sans text-xs sm:text-sm text-muted-foreground text-center leading-relaxed max-w-2xl mx-auto px-1">
             {t(language, "menu.disclaimer")}
           </p>
         </div>
@@ -718,38 +1120,54 @@ const sectionSubtitle = (section.sectionKey === "suppen" || section.sectionKey =
 
       {/* Random Dish Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="font-serif text-3xl flex items-center gap-2">
-              <Sparkles className="h-6 w-6 text-accent" />
+        <DialogContent className="sm:max-w-md max-h-[90vh] flex flex-col p-4 sm:p-6">
+          <DialogHeader className="shrink-0">
+            <DialogTitle className="font-serif text-2xl sm:text-3xl flex items-center gap-2">
+              <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-accent shrink-0" />
               {t(language, "menu.randomDishTitle")}
             </DialogTitle>
             <DialogDescription className="text-muted-foreground text-sm">
               {t(language, "menu.randomDishDescription")}
             </DialogDescription>
           </DialogHeader>
-          {randomDish && (
-            <div className="space-y-4 pt-4">
-              <div className="text-xs uppercase tracking-wider text-accent font-semibold">
-                {t(language, "menu.randomDishCategory")}: {randomDish.category}
+          {randomSuggestion && (
+            <div className="space-y-5 pt-4 overflow-y-auto min-h-0 -mx-1 px-1">
+              <div className="space-y-3">
+                <div className="text-xs uppercase tracking-wider text-accent font-semibold">
+                  {t(language, "menu.randomDishCategory")}: {randomSuggestion.food.category}
+                </div>
+                <h3 className="font-serif text-lg sm:text-xl text-foreground break-words">
+                  {randomSuggestion.food.name}
+                </h3>
+                {randomSuggestion.food.description && (
+                  <p className="text-muted-foreground text-sm leading-relaxed">
+                    {randomSuggestion.food.description}
+                  </p>
+                )}
+                <div className="font-sans font-semibold text-foreground">
+                  €{randomSuggestion.food.price}
+                </div>
               </div>
-              <h3 className="font-serif text-2xl text-foreground">
-                {randomDish.name}
-              </h3>
-              {randomDish.description && (
-                <p className="text-muted-foreground leading-relaxed">
-                  {randomDish.description}
-                </p>
-              )}
-              <div className="pt-4 border-t border-border">
-                <div className="font-sans font-semibold text-2xl text-foreground">
-                  €{randomDish.price}
+              <div className="border-t border-border pt-4 space-y-3">
+                <div className="text-xs uppercase tracking-wider text-accent font-semibold">
+                  {t(language, "menu.randomDishDrink")}: {randomSuggestion.drink.category}
+                </div>
+                <h3 className="font-serif text-lg sm:text-xl text-foreground break-words">
+                  {randomSuggestion.drink.name}
+                </h3>
+                {randomSuggestion.drink.description && (
+                  <p className="text-muted-foreground text-sm leading-relaxed">
+                    {randomSuggestion.drink.description}
+                  </p>
+                )}
+                <div className="font-sans font-semibold text-foreground">
+                  €{randomSuggestion.drink.price}
                 </div>
               </div>
               <Button
                 onClick={getRandomDish}
                 variant="outline"
-                className="w-full mt-4"
+                className="w-full mt-4 min-h-[44px] touch-manipulation shrink-0"
               >
                 {t(language, "menu.anotherSuggestion")}
               </Button>
@@ -771,18 +1189,18 @@ const CTASection = () => {
   const { language } = useLanguage();
   
   return (
-    <section ref={ref} className="py-16 px-4 bg-secondary/30">
+    <section ref={ref} className="py-10 sm:py-12 md:py-16 px-4 bg-secondary/30">
       <div className={`container mx-auto max-w-2xl text-center animate-fade-up ${isVisible ? 'visible' : ''}`}>
-        <h2 className="font-serif text-3xl md:text-4xl text-foreground mb-6">
+        <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl text-foreground mb-4 sm:mb-6">
           {t(language, "menu.reserveTitle")}
         </h2>
-        <p className="font-sans text-muted-foreground mb-8">
+        <p className="font-sans text-sm sm:text-base text-muted-foreground mb-6 sm:mb-8 px-2">
           {t(language, "menu.reserveDescription")}
         </p>
         <Button
           asChild
           size="lg"
-          className="bg-primary text-primary-foreground hover:bg-accent font-sans tracking-wide"
+          className="bg-primary text-primary-foreground hover:bg-accent font-sans tracking-wide min-h-[48px] touch-manipulation w-full sm:w-auto"
         >
           <a
             href="https://www.opentable.de/restref/client/?rid=445905"

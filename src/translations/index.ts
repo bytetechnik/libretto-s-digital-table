@@ -105,10 +105,15 @@ export const translations = {
       surprise: "Überrasch mich!",
       allCategories: "Alle",
       drinksCategory: "Getränke",
+      menuPartBreakfast: "Frühstück & Brunch",
+      menuPartBreakfastSubtitle: "Herzhaftes Frühstück",
+      menuPartSpeisen: "SPEISEN & GETRÄNKE",
+      menuPartSpeisenSubtitle: "Vorspeisen · Pasta · Klassiker · Getränke",
       drinksSelectHint: "Kategorie wählen – springt zur Sektion",
       noResults: "Keine Gerichte gefunden. Versuchen Sie eine andere Suche.",
       randomDishTitle: "Empfehlung des Hauses",
       randomDishCategory: "Kategorie",
+      randomDishDrink: "Getränk",
       close: "Schließen",
       randomDishDescription: "Wie wäre es damit?",
       anotherSuggestion: "Noch eine Empfehlung",
@@ -116,8 +121,62 @@ export const translations = {
       reserveDescription: "Sichern Sie sich Ihren Platz für ein unvergessliches kulinarisches Erlebnis",
       reserveButton: "JETZT RESERVIEREN",
       intro: "In dieser Karte finden Sie kleine Teller, Pasta, warme Klassiker, Süßes und ausgewählte Getränke.\nReservierungen sind über OpenTable möglich.\nKartenzahlung ist möglich und gern gesehen.\nWenn Sie jemandem eine Freude machen möchten: Gutscheine erhalten Sie jederzeit bei uns.",
+      introBreakfast: "Dieses Menü bietet unsere Frühstücks- und Brunch-Klassiker sowie ausgewählte Getränke.\nReservierungen sind über OpenTable möglich.\nKartenzahlung ist möglich und gern gesehen.\nMöchten Sie jemandem eine Freude machen? Gutscheine erhalten Sie jederzeit bei uns.",
       disclaimer: "Alle Preise in € inkl. MwSt. Bitte geben Sie uns Bescheid, wenn Sie Allergien oder Unverträglichkeiten haben. Gerne stellen wir Ihnen eine Allergenliste zur Verfügung. Änderungen und Irrtümer vorbehalten.",
       sections: {
+        herzhaftesFruehstueck: {
+          title: "HERZHAFTES FRÜHSTÜCK",
+          items: {
+            leMax: { name: "Le Max", description: "J. Gaues Sauerteigbrot | Frischkäse | Schinken | Bacon | Tomate | Spiegeleier" },
+            avocadoUndEi: { name: "Avocado und Ei", description: "J. Gaues Sauerteigbrot | Avocado | Tomate | Schafskäse | pochierte Eier | Kresse" },
+            uovaInPurgatorio: { name: "Uova in Purgatorio", description: "Italian-Style Shakshuka | Tomatensugo | Zwiebel | bunte Paprika | pochierte Eier | Basilikum | Ricotta | J. Gaues Sauerteigbrot" },
+            briocheLox: { name: "Brioche Lox", description: "Brioche | Frischkäse | Graved Lachs | Zitrone | Dill | Rote Zwiebeln | Kapern" },
+            croqueMadame: { name: "Croque Madame", description: "Brioche | Kochschinken | Dijon Senf | Crème fraîche | Emmentaler | Spiegelei | Wildkräutersalat" },
+            eggsBenedict: { name: "Eggs Benedict", description: "Brioche | pochierte Eier | Wildkräutersalat | Sauce Hollandaise. Wahlweise Bacon | Graved Lachs | wilder Brokkoli" },
+            steakAndEggs: { name: "Steak & Eggs", description: "Steak vom Weiderind | zwei pochierte Eier | Pommes frites | Sauce Hollandaise | Parmigiano Reggiano" },
+          },
+        },
+        bowlsMuesli: {
+          title: "BOWLS & MÜSLI",
+          items: {
+            acaiBowl: { name: "Açaí Bowl", description: "Cremiger Açaí Fruchtmix aus Banane, Beere und Dattel | Frische Beeren | Banane | Kokosnuss | Chiasamen | Granola" },
+            granolaMuesli: { name: "Granola Müsli", description: "Griechischer Joghurt | Granola | Früchte | Kokosnuss | Chiasamen | Honig" },
+            apfelZimtPorridge: { name: "Apfel Zimt Porridge", description: "Apfel | Beeren | Kokosnuss | Zimt | Agavensirup" },
+          },
+        },
+        eierspeisenOmelettes: {
+          title: "EIERSPEISEN & OMELETTES",
+          subtitle: "Serviert mit Toast oder Brötchen und Butter",
+          items: {
+            ruehreiSpiegelei: { name: "Rührei oder Spiegelei aus drei Eiern", description: "Wahlweise Natur | Bacon | Kochschinken" },
+            zweiEierImGlas: { name: "2 Eier im Glas", description: "Wir verwenden ausschließlich Freilandeier vom Hofgut Hanstein" },
+            mumbaiMorningOmelette: { name: "Mumbai Morning Omelette", description: "Marktgemüse | Ingwer | Kurkuma | Zwiebeln | Koriander | Minzjoghurt" },
+            bauernOmelette: { name: "Bauern Omelette", description: "Kartoffeln | Kochschinken | Champignons | Zwiebeln | Emmentaler" },
+            sophiaLorenOmelette: { name: "Sophia Loren Omelette", description: "Tomaten | Oliven | Salami | wilder Brokkoli | Basilikum | Parmigiano Reggiano" },
+          },
+        },
+        fruehstueckSuesses: {
+          title: "SÜSSES",
+          items: {
+            pancakesCallebaut: { name: "Pancakes Callebaut", description: "Mini Pancakes | Callebaut Zartbitter | Mascarpone | Beeren" },
+            klassischeWaffeln: { name: "Klassische Waffeln", description: "Hausgemachte Waffeln | Puderzucker" },
+            frenchToast: { name: "French Toast", description: "Brioche | Himbeerkompott | Griechischer Joghurt | Mandeln" },
+          },
+        },
+        fruehstueckSets: {
+          title: "FRÜHSTÜCK SETS",
+          items: {
+            julesVerne: { name: "Jules Verne", description: "Steinofen Baguette und Croissant | Französischer Käse | Trauben | gekochtes Ei | Marmelade | Butter" },
+            goethe: { name: "Goethe", description: "Brötchen und Körnerbrot | Salami | Kochschinken | Brie | Gouda | 2 Eier im Glas | Marmelade | Butter" },
+            fitness: { name: "Fitness", description: "Körnerbrot und Vollkornbrötchen | Gouda | Brie | Honig | Butter | Frischkäse | gekochtes Ei | Granola Müsli | frisch gepresster Orangensaft" },
+            signatureEtagere: { name: "Signature Etagere für 2 Personen", description: "Brotkorb mit Brötchen, Croissant und Brot | Käse und Aufschnittauswahl | Graved Lachs | Meerrettich | Frischkäse | Avocado | Marmelade | Butter | Rühreier | Granola Müslis | 2 Gläser Prosecco oder 2 frisch gepresste Orangensäfte" },
+            shakespeare: { name: "Shakespeare", description: "Toastbrot | Butter | 2 Spiegeleier | Bacon | Nürnberger Würstchen | Tomaten | Champignons | Ketchup | frisch gepresster Orangensaft" },
+            stoltze: { name: "Stoltze", description: "Brötchen | gekochtes Ei | Marmelade | Butter" },
+            levante: { name: "Levante", description: "Körnerbrot | Omelette aus 2 Eiern | Baba Ganoush | Avocado | Oliven | Schafskäse | Gurke | Tomate" },
+            extras: { name: "Extras", description: "Bacon 4 | Nürnberger Würstchen 4 | Graved Lachs 8 | Brötchen 1.5 | Vollkornbrötchen 2 | Croissant 4 | Butter 1.5 | Marmelade 2 | Honig 2 | Nutella 2 | Frischkäse 3 | Baba Ganoush 3 | Avocado 5 | Pommes frites 6 | Ketchup 2 | Mayo 2 | Trüffelmayo 3" },
+            zweiHalbeBelegteBroetchen: { name: "Zwei halbe belegte Brötchen", description: "Wahlweise Salami | Kochschinken | Brie | Gouda" },
+          },
+        },
         vorspeisen: {
           title: "VORSPEISEN UND KLEINE TELLER",
           items: {
@@ -186,14 +245,32 @@ export const translations = {
         erfrischungsgetraenke: {
           title: "ERFRISCHUNGSGETRÄNKE",
           items: {
-            taunusquelleNaturelle: { name: "Taunusquelle Naturelle", description: "0,25 l | 0,75 l" },
-            taunusquelleMedium: { name: "Taunusquelle Medium", description: "0,25 l | 0,75 l" },
+            taunusquelleNaturelle: { name: "Taunusquelle Naturelle", description: "0,25 | 0,75 l" },
+            taunusquelleMedium: { name: "Taunusquelle Medium", description: "0,25 | 0,75 l" },
             infusedWater: { name: "Infused Water in der Karaffe", description: "0,75 l. Sprudelwasser | Gurke | Zitrone | Ingwer | Minze" },
             softdrinks: { name: "Softdrinks", description: "0,2 l | 0,4 l. Cola | Cola Zero | Sprite | Fanta" },
-            saefteRapps: { name: "Säfte von Rapps", description: "0,3 l | 0,5 l. Apfel | Orange | Maracuja | Cranberry | Rhabarber | Johannisbeere. Auch als Schorle" },
+            saefteRapps: { name: "Säfte von Rapps", description: "0,3 | 0,5 l. Apfel | Orange | Maracuja | Cranberry | Rhabarber | Johannisbeere. Auch als Schorle" },
             thomasHenry: { name: "Thomas Henry", description: "0,2 l. Tonic Water | Bitter Lemon | Ginger Ale | Ginger Beer | Pink Grapefruit" },
             hausgemachteLimonade: { name: "Hausgemachte Limonade", description: "0,5 l. Ingwer & Zitrone | Beeren" },
             kalteZitrone: { name: "Kalte Zitrone", description: "0,5 l. Sprudelwasser | frischer Zitronensaft | Minze" },
+          },
+        },
+        frischGepresste: {
+          title: "FRISCH GEPRESSTE",
+          subtitle: "Säfte",
+          items: {
+            orangensaft: { name: "Orangensaft", description: "0,3 l" },
+            pinkGrapefruitsaft: { name: "Pink Grapefruitsaft", description: "0,3 l" },
+          },
+        },
+        smoothies: {
+          title: "SMOOTHIES",
+          subtitle: "Unsere Smoothies basieren auf abgestimmten Fruchtkompositionen, daher sind keine Änderungen möglich.",
+          items: {
+            purpleAcai: { name: "Purple Açai", description: "Açai Beere | Blaubeere | Mango 0,3 l" },
+            palmGarden: { name: "Palm Garden", description: "Ananas | Banane | Spinat | Mango 0,3 l" },
+            pescaDOro: { name: "Pesca d'Oro", description: "Pfirsich | Passionsfrucht | Mango 0,3 l" },
+            optionalIngwer: { name: "Optional frischer Ingwer", description: "+ 0,5 €" },
           },
         },
         bierUndApfelwein: {
@@ -213,11 +290,16 @@ export const translations = {
           },
         },
         schaumweinChampagner: {
-          title: "SCHAUMWEIN & CHAMPAGNER",
+          title: "SCHAUMWEIN",
           items: {
-            carpeNoctemProseccoBrut: { name: "Carpe Noctem Prosecco Brut", description: "0,1 l | 0,75 l" },
-            carpeNoctemProseccoRose: { name: "Carpe Noctem Prosecco Rosé", description: "0,1 l | 0,75 l" },
+            carpeNoctemProseccoBrut: { name: "Carpe Noctem Prosecco Brut", description: "0,1 | 0,75 l" },
+            carpeNoctemProseccoRose: { name: "Carpe Noctem Prosecco Rosé", description: "0,1 | 0,75 l" },
             chandonGardenSpritz: { name: "Chandon Garden Spritz", description: "0,75 l" },
+          },
+        },
+        champagner: {
+          title: "CHAMPAGNER",
+          items: {
             perrierJouetGrandBrut: { name: "Perrier-Jouët Grand Brut", description: "0,75 l" },
             perrierJouetBlasonRose: { name: "Perrier-Jouët Blason Rosé", description: "0,75 l" },
             ruinartBrut: { name: "Ruinart Brut", description: "0,75 l" },
@@ -264,7 +346,8 @@ export const translations = {
             cafeCreme: { name: "Café Crème", description: "" },
             kaennchenCafeCreme: { name: "Kännchen Café Crème", description: "" },
             espressoDoppio: { name: "Espresso | Doppio", description: "" },
-            espressoMacchiatoDoppio: { name: "Espresso Macchiato | Doppio Macchiato", description: "" },
+            espressoMacchiatoDoppio: { name: "Espresso Macchiato | Doppio", description: "" },
+            macchiato: { name: "Macchiato", description: "" },
             americano: { name: "Americano", description: "" },
             latteMacchiato: { name: "Latte Macchiato", description: "" },
             cappuccino: { name: "Cappuccino", description: "" },
@@ -276,12 +359,22 @@ export const translations = {
             affogato: { name: "Affogato", description: "" },
           },
         },
+        brunchDrinks: {
+          title: "BRUNCH DRINKS",
+          items: {
+            mimosa: { name: "Mimosa", description: "Carpe Noctem Prosecco | Orangensaft oder Grapefruitsaft" },
+            ginBellini: { name: "Gin Bellini", description: "Carpe Noctem Prosecco | Malfy Gin Arancia | Pfirsichpüree" },
+            espressoMartiniBrunch: { name: "Espresso Martini", description: "42 Below Vodka | Kahlúa Kaffeelikör | Vanille | Espresso" },
+            mimosaTable: { name: "Mimosa Table", description: "Carpe Noctem Prosecco Brut 0,75 l & 1 Karaffe Orangensaft oder Grapefruitsaft. Zum Teilen, selbst einschenken, nach Lust und Laune mixen" },
+          },
+        },
         heissgetraenke: {
           title: "HEISSGETRÄNKE",
           items: {
             chaiLatte: { name: "Chai Latte", description: "" },
             pumpkinSpiceLatte: { name: "Pumpkin Spice Latte", description: "" },
             heisseSchokolade: { name: "Heiße Schokolade", description: "Optional Schlagsahne. Optional Hafermilch oder laktosefreie Milch +1 €" },
+            mochachino: { name: "Mochachino", description: "Optional Hafermilch oder laktosefreie Milch +1 €" },
           },
         },
         teeImGlas: {
@@ -293,7 +386,7 @@ export const translations = {
             sonneAsienSencha: { name: "Sonne Asien Sencha", description: "Milder Grüntee" },
             kraeutergarten: { name: "Kräutergarten", description: "Aromatischer Kräutertee" },
             kamillenblueten: { name: "Kamillenblüten", description: "Milder Kamillentee" },
-            pfefferminze: { name: "Pfefferminze", description: "Pfefferminztee" },
+            pfefferminze: { name: "Pfefferminze", description: "Frischer Pfefferminztee" },
             rooibosVanille: { name: "Rooibos Vanille", description: "Milder Rooibos mit Vanille" },
             sommerbeeren: { name: "Sommerbeeren", description: "Fruchtiger Beerentee" },
             ingwerMinzeZitrone: { name: "Ingwer Minze Zitrone", description: "Frischer Ingwer | Minze | Zitrone" },
@@ -524,10 +617,15 @@ export const translations = {
       surprise: "Surprise me!",
       allCategories: "All",
       drinksCategory: "Drinks",
+      menuPartBreakfast: "Breakfast & Brunch",
+      menuPartBreakfastSubtitle: "Savory breakfast",
+      menuPartSpeisen: "Food & Drinks",
+      menuPartSpeisenSubtitle: "Starters · Pasta · Classics · Drinks",
       drinksSelectHint: "Choose a category to jump to section",
       noResults: "No dishes found. Try a different search.",
       randomDishTitle: "House Recommendation",
       randomDishCategory: "Category",
+      randomDishDrink: "Drink",
       close: "Close",
       randomDishDescription: "How about this?",
       anotherSuggestion: "Another suggestion",
@@ -535,8 +633,62 @@ export const translations = {
       reserveDescription: "Secure your spot for an unforgettable culinary experience",
       reserveButton: "RESERVE NOW",
       intro: "In this menu you will find small plates, pasta, warm classics, sweets and a selection of drinks.\nReservations can be made via OpenTable.\nCard payment is possible and welcome.\nIf you would like to give someone a treat: gift vouchers are available from us at any time.",
+      introBreakfast: "This menu features our breakfast and brunch classics as well as selected beverages.\nReservations can be made via OpenTable.\nCard payments are accepted and appreciated.\nWant to treat someone special? Gift certificates are available from us anytime.",
       disclaimer: "All prices in € including VAT. Please let us know if you have allergies or intolerances. We are happy to provide you with an allergen list. Subject to changes and errors.",
       sections: {
+        herzhaftesFruehstueck: {
+          title: "SAVORY BREAKFAST",
+          items: {
+            leMax: { name: "Le Max", description: "J. Gaues sourdough bread | cream cheese | ham | bacon | tomato | fried eggs" },
+            avocadoUndEi: { name: "Avocado and Egg", description: "J. Gaues sourdough bread | avocado | tomato | feta | poached eggs | cress" },
+            uovaInPurgatorio: { name: "Uova in Purgatorio", description: "Italian-style shakshuka | tomato sugo | onion | bell pepper | poached eggs | basil | ricotta | J. Gaues sourdough bread" },
+            briocheLox: { name: "Brioche Lox", description: "Brioche | cream cheese | gravad lax | lemon | dill | red onions | capers" },
+            croqueMadame: { name: "Croque Madame", description: "Brioche | cooked ham | Dijon mustard | crème fraîche | Emmental | fried egg | wild herb salad" },
+            eggsBenedict: { name: "Eggs Benedict", description: "Brioche | poached eggs | wild herb salad | hollandaise sauce. Option: bacon | gravad lax | wild broccoli" },
+            steakAndEggs: { name: "Steak & Eggs", description: "Pasture-fed beef steak | two poached eggs | French fries | hollandaise sauce | Parmigiano Reggiano" },
+          },
+        },
+        bowlsMuesli: {
+          title: "BOWLS & MÜSLI",
+          items: {
+            acaiBowl: { name: "Açaí Bowl", description: "Creamy açaí fruit blend of banana, berry and date | Fresh berries | Banana | Coconut | Chia seeds | Granola" },
+            granolaMuesli: { name: "Granola Müsli", description: "Greek yoghurt | Granola | Fruit | Coconut | Chia seeds | Honey" },
+            apfelZimtPorridge: { name: "Apple Cinnamon Porridge", description: "Apple | Berries | Coconut | Cinnamon | Agave syrup" },
+          },
+        },
+        eierspeisenOmelettes: {
+          title: "EGG DISHES & OMELETTES",
+          subtitle: "Served with toast or bread roll and butter",
+          items: {
+            ruehreiSpiegelei: { name: "Scrambled or fried eggs (three eggs)", description: "Option: Plain | Bacon | Cooked ham" },
+            zweiEierImGlas: { name: "2 eggs in a glass", description: "We use only free-range eggs from Hofgut Hanstein" },
+            mumbaiMorningOmelette: { name: "Mumbai Morning Omelette", description: "Market vegetables | Ginger | Turmeric | Onions | Coriander | Mint yoghurt" },
+            bauernOmelette: { name: "Farmhouse Omelette", description: "Potatoes | Cooked ham | Mushrooms | Onions | Emmental" },
+            sophiaLorenOmelette: { name: "Sophia Loren Omelette", description: "Tomatoes | Olives | Salami | Wild broccoli | Basil | Parmigiano Reggiano" },
+          },
+        },
+        fruehstueckSuesses: {
+          title: "SWEETS",
+          items: {
+            pancakesCallebaut: { name: "Pancakes Callebaut", description: "Mini pancakes | Callebaut dark chocolate | Mascarpone | Berries" },
+            klassischeWaffeln: { name: "Classic Waffles", description: "Homemade waffles | Icing sugar" },
+            frenchToast: { name: "French Toast", description: "Brioche | Raspberry compote | Greek yoghurt | Almonds" },
+          },
+        },
+        fruehstueckSets: {
+          title: "BREAKFAST SETS",
+          items: {
+            julesVerne: { name: "Jules Verne", description: "Stone oven baguette and croissant | French cheese | Grapes | Boiled egg | Jam | Butter" },
+            goethe: { name: "Goethe", description: "Rolls and wholegrain bread | Salami | Cooked ham | Brie | Gouda | 2 eggs in a glass | Jam | Butter" },
+            fitness: { name: "Fitness", description: "Wholegrain bread and wholegrain rolls | Gouda | Brie | Honey | Butter | Cream cheese | Boiled egg | Granola muesli | Freshly squeezed orange juice" },
+            signatureEtagere: { name: "Signature Etagere for 2 persons", description: "Bread basket with rolls, croissant and bread | Cheese and cold cuts selection | Gravad lax | Horseradish | Cream cheese | Avocado | Jam | Butter | Scrambled eggs | Granola muesli | 2 glasses Prosecco or 2 freshly squeezed orange juices" },
+            shakespeare: { name: "Shakespeare", description: "Toast | Butter | 2 fried eggs | Bacon | Nuremberg sausages | Tomatoes | Mushrooms | Ketchup | Freshly squeezed orange juice" },
+            stoltze: { name: "Stoltze", description: "Rolls | Boiled egg | Jam | Butter" },
+            levante: { name: "Levante", description: "Wholegrain bread | 2-egg omelette | Baba ganoush | Avocado | Olives | Feta | Cucumber | Tomato" },
+            extras: { name: "Extras", description: "Bacon 4 | Nuremberg sausages 4 | Gravad lax 8 | Roll 1.5 | Wholegrain roll 2 | Croissant 4 | Butter 1.5 | Jam 2 | Honey 2 | Nutella 2 | Cream cheese 3 | Baba ganoush 3 | Avocado 5 | French fries 6 | Ketchup 2 | Mayo 2 | Truffle mayo 3" },
+            zweiHalbeBelegteBroetchen: { name: "Two half filled rolls", description: "Option: Salami | Cooked ham | Brie | Gouda" },
+          },
+        },
         vorspeisen: {
           title: "STARTERS & SMALL PLATES",
           items: {
@@ -605,14 +757,32 @@ export const translations = {
         erfrischungsgetraenke: {
           title: "SOFT DRINKS",
           items: {
-            taunusquelleNaturelle: { name: "Taunusquelle Still", description: "0.25 l | 0.75 l" },
-            taunusquelleMedium: { name: "Taunusquelle Medium", description: "0.25 l | 0.75 l" },
+            taunusquelleNaturelle: { name: "Taunusquelle Naturelle", description: "0.25 | 0.75 l" },
+            taunusquelleMedium: { name: "Taunusquelle Medium", description: "0.25 | 0.75 l" },
             infusedWater: { name: "Infused Water (carafe)", description: "0.75 l. Sparkling water | cucumber | lemon | ginger | mint" },
             softdrinks: { name: "Soft Drinks", description: "0.2 l | 0.4 l. Cola | Cola Zero | Sprite | Fanta" },
-            saefteRapps: { name: "Rapps Juices", description: "0.3 l | 0.5 l. Apple | orange | passion fruit | cranberry | rhubarb | blackcurrant. Also as spritzer" },
+            saefteRapps: { name: "Säfte von Rapps", description: "0.3 | 0.5 l. Apple | orange | passion fruit | cranberry | rhubarb | blackcurrant. Also as spritzer" },
             thomasHenry: { name: "Thomas Henry", description: "0.2 l. Tonic Water | Bitter Lemon | Ginger Ale | Ginger Beer | Pink Grapefruit" },
             hausgemachteLimonade: { name: "Homemade Lemonade", description: "0.5 l. Ginger & lemon | berries" },
             kalteZitrone: { name: "Cold Lemon", description: "0.5 l. Sparkling water | fresh lemon juice | mint" },
+          },
+        },
+        frischGepresste: {
+          title: "FRESHLY PRESSED",
+          subtitle: "Juices",
+          items: {
+            orangensaft: { name: "Orange juice", description: "0.3 l" },
+            pinkGrapefruitsaft: { name: "Pink grapefruit juice", description: "0.3 l" },
+          },
+        },
+        smoothies: {
+          title: "SMOOTHIES",
+          subtitle: "Our smoothies are based on balanced fruit compositions; therefore no modifications are possible.",
+          items: {
+            purpleAcai: { name: "Purple Açai", description: "Açai berry | Blueberry | Mango 0.3 l" },
+            palmGarden: { name: "Palm Garden", description: "Pineapple | Banana | Spinach | Mango 0.3 l" },
+            pescaDOro: { name: "Pesca d'Oro", description: "Peach | Passion fruit | Mango 0.3 l" },
+            optionalIngwer: { name: "Optional fresh ginger", description: "+ €0.50" },
           },
         },
         bierUndApfelwein: {
@@ -632,11 +802,16 @@ export const translations = {
           },
         },
         schaumweinChampagner: {
-          title: "SPARKLING WINE & CHAMPAGNE",
+          title: "SPARKLING WINE",
           items: {
-            carpeNoctemProseccoBrut: { name: "Carpe Noctem Prosecco Brut", description: "0.1 l | 0.75 l" },
-            carpeNoctemProseccoRose: { name: "Carpe Noctem Prosecco Rosé", description: "0.1 l | 0.75 l" },
+            carpeNoctemProseccoBrut: { name: "Carpe Noctem Prosecco Brut", description: "0.1 | 0.75 l" },
+            carpeNoctemProseccoRose: { name: "Carpe Noctem Prosecco Rosé", description: "0.1 | 0.75 l" },
             chandonGardenSpritz: { name: "Chandon Garden Spritz", description: "0.75 l" },
+          },
+        },
+        champagner: {
+          title: "CHAMPAGNE",
+          items: {
             perrierJouetGrandBrut: { name: "Perrier-Jouët Grand Brut", description: "0.75 l" },
             perrierJouetBlasonRose: { name: "Perrier-Jouët Blason Rosé", description: "0.75 l" },
             ruinartBrut: { name: "Ruinart Brut", description: "0.75 l" },
@@ -683,7 +858,8 @@ export const translations = {
             cafeCreme: { name: "Café Crème", description: "" },
             kaennchenCafeCreme: { name: "Pot of Café Crème", description: "" },
             espressoDoppio: { name: "Espresso | Doppio", description: "" },
-            espressoMacchiatoDoppio: { name: "Espresso Macchiato | Doppio Macchiato", description: "" },
+            espressoMacchiatoDoppio: { name: "Espresso Macchiato | Doppio", description: "" },
+            macchiato: { name: "Macchiato", description: "" },
             americano: { name: "Americano", description: "" },
             latteMacchiato: { name: "Latte Macchiato", description: "" },
             cappuccino: { name: "Cappuccino", description: "" },
@@ -695,12 +871,22 @@ export const translations = {
             affogato: { name: "Affogato", description: "" },
           },
         },
+        brunchDrinks: {
+          title: "BRUNCH DRINKS",
+          items: {
+            mimosa: { name: "Mimosa", description: "Carpe Noctem Prosecco | Orange or grapefruit juice" },
+            ginBellini: { name: "Gin Bellini", description: "Carpe Noctem Prosecco | Malfy Gin Arancia | Peach purée" },
+            espressoMartiniBrunch: { name: "Espresso Martini", description: "42 Below Vodka | Kahlúa coffee liqueur | Vanilla | Espresso" },
+            mimosaTable: { name: "Mimosa Table", description: "Carpe Noctem Prosecco Brut 0.75 l & 1 carafe orange or grapefruit juice. To share, self-pour, mix to taste" },
+          },
+        },
         heissgetraenke: {
           title: "HOT DRINKS",
           items: {
             chaiLatte: { name: "Chai Latte", description: "" },
             pumpkinSpiceLatte: { name: "Pumpkin Spice Latte", description: "" },
             heisseSchokolade: { name: "Hot Chocolate", description: "Optional whipped cream. Optional oat milk or lactose-free milk +1 €" },
+            mochachino: { name: "Mochachino", description: "Optional oat milk or lactose-free milk +1 €" },
           },
         },
         teeImGlas: {
@@ -712,7 +898,7 @@ export const translations = {
             sonneAsienSencha: { name: "Sonne Asien Sencha", description: "Mild green tea" },
             kraeutergarten: { name: "Kräutergarten", description: "Aromatic herbal tea" },
             kamillenblueten: { name: "Chamomile", description: "Mild chamomile tea" },
-            pfefferminze: { name: "Peppermint", description: "Peppermint tea" },
+            pfefferminze: { name: "Peppermint", description: "Fresh peppermint tea" },
             rooibosVanille: { name: "Rooibos Vanille", description: "Mild rooibos with vanilla" },
             sommerbeeren: { name: "Sommerbeeren", description: "Fruity berry tea" },
             ingwerMinzeZitrone: { name: "Ginger Mint Lemon", description: "Fresh ginger | mint | lemon" },
