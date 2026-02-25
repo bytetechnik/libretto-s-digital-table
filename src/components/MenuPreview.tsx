@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Coffee, UtensilsCrossed } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
@@ -9,22 +10,20 @@ const MenuPreview = () => {
   const { ref, isVisible } = useScrollAnimation(0.1);
   const { language } = useLanguage();
 
-  const categories = [
+  const menuCards = [
     {
-      title: t(language, "menuPreview.categories.breakfast.title"),
-      description: t(language, "menuPreview.categories.breakfast.description"),
+      key: "breakfast",
+      titleKey: "menu.menuPartBreakfast",
+      subtitleKey: "menu.menuPartBreakfastSubtitle",
+      Icon: Coffee,
+      to: "/menu",
     },
     {
-      title: t(language, "menuPreview.categories.lunch.title"),
-      description: t(language, "menuPreview.categories.lunch.description"),
-    },
-    {
-      title: t(language, "menuPreview.categories.sweet.title"),
-      description: t(language, "menuPreview.categories.sweet.description"),
-    },
-    {
-      title: t(language, "menuPreview.categories.drinks.title"),
-      description: t(language, "menuPreview.categories.drinks.description"),
+      key: "speisen",
+      titleKey: "menu.menuPartSpeisen",
+      subtitleKey: "menu.menuPartSpeisenSubtitle",
+      Icon: UtensilsCrossed,
+      to: "/menu",
     },
   ];
 
@@ -41,18 +40,32 @@ const MenuPreview = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6 mb-12">
-          {categories.map((category, index) => (
+        <div className="grid md:grid-cols-2 gap-6 mb-12 max-w-2xl mx-auto">
+          {menuCards.map((card, index) => {
+            const Icon = card.Icon;
+            return (
             <div
-              key={category.title}
+              key={card.key}
               className={`animate-fade-up ${isVisible ? `visible stagger-${index + 1}` : ''}`}
             >
-              <Card className="p-8 hover:shadow-lg transition-shadow bg-card border-border h-full">
-                <h3 className="font-serif text-2xl text-foreground mb-3">{category.title}</h3>
-                <p className="text-muted-foreground font-sans text-sm">{category.description}</p>
-              </Card>
+              <Link to={card.to}>
+                <Card className="p-6 sm:p-8 hover:shadow-lg transition-all duration-200 hover:border-primary/50 bg-card border-border h-full flex flex-col sm:flex-row items-center gap-4 sm:gap-5 text-center sm:text-left group cursor-pointer">
+                  <div className="flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                    <Icon className="h-7 w-7 sm:h-8 sm:w-8" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-serif text-xl sm:text-2xl text-foreground mb-1">
+                      {t(language, card.titleKey)}
+                    </h3>
+                    <p className="text-muted-foreground font-sans text-sm">
+                      {t(language, card.subtitleKey)}
+                    </p>
+                  </div>
+                </Card>
+              </Link>
             </div>
-          ))}
+            );
+          })}
         </div>
 
         <div className={`text-center space-y-4 animate-fade-up ${isVisible ? 'visible stagger-5' : ''}`}>
