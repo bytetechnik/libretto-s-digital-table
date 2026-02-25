@@ -3,7 +3,6 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,10 +20,8 @@ import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { t } from "@/translations";
-import { Search, Sparkles, ChevronDown, Wine, Coffee, UtensilsCrossed } from "lucide-react";
+import { Search, ChevronDown, Wine, Coffee, UtensilsCrossed } from "lucide-react";
 import { useState, useMemo, useCallback, useEffect } from "react";
-
-type SuggestionItem = { name: string; description?: string; price: string; category: string };
 
 // All drink section keys (order matches menu structure)
 const DRINK_SECTION_KEYS = [
@@ -53,22 +50,15 @@ const DRINK_SECTION_KEYS = [
   "likoereDigestifs",
 ];
 
-// Get current hour in German time (Europe/Berlin)
-const getGermanHour = (): number => {
-  const now = new Date();
-  const formatter = new Intl.DateTimeFormat("de-DE", { timeZone: "Europe/Berlin", hour: "numeric", hour12: false });
-  return parseInt(formatter.format(now), 10);
-};
-
 // Breakfast & Brunch menu (only)
 const BREAKFAST_MENU_STRUCTURE = [
   {
     sectionKey: "herzhaftesFruehstueck",
     itemKeys: [
-      { key: "leMax", price: "15" },
-      { key: "avocadoUndEi", price: "16" },
-      { key: "uovaInPurgatorio", price: "13" },
-      { key: "briocheLox", price: "14" },
+      { key: "leMax", price: "16" },
+      { key: "avocadoUndEi", price: "15" },
+      { key: "uovaInPurgatorio", price: "14" },
+      { key: "briocheLox", price: "13" },
       { key: "croqueMadame", price: "15" },
       { key: "eggsBenedict", price: "16" },
       { key: "steakAndEggs", price: "19" },
@@ -121,7 +111,6 @@ const BREAKFAST_MENU_STRUCTURE = [
       { key: "kaennchenCafeCreme", price: "6.5" },
       { key: "espressoDoppio", price: "3 | 4.7" },
       { key: "espressoMacchiatoDoppio", price: "3.2 | 4.9" },
-      { key: "macchiato", price: "3.8" },
       { key: "americano", price: "3.8" },
       { key: "latteMacchiato", price: "5" },
       { key: "cappuccino", price: "3.9 | 5.5" },
@@ -231,8 +220,6 @@ const Menu = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [menuPart, setMenuPart] = useState<"breakfast" | "speisen">("breakfast");
-  const [randomSuggestion, setRandomSuggestion] = useState<{ food: SuggestionItem; drink: SuggestionItem } | null>(null);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDrinksSheetOpen, setIsDrinksSheetOpen] = useState(false);
   const { language } = useLanguage();
   const isMobile = useIsMobile();
@@ -404,7 +391,6 @@ const Menu = () => {
         { key: "kaennchenCafeCreme", price: "6.5" },
         { key: "espressoDoppio", price: "3 | 4.7" },
         { key: "espressoMacchiatoDoppio", price: "3.2 | 4.9" },
-        { key: "macchiato", price: "3.8" },
         { key: "americano", price: "3.8" },
         { key: "latteMacchiato", price: "5" },
         { key: "cappuccino", price: "3.9 | 5.5" },
@@ -538,7 +524,7 @@ const Menu = () => {
       itemKeys: [
         { key: "patronSilver", price: "8" },
         { key: "donJulioReposado", price: "10" },
-        { key: "claseAzulReposado", price: "2" },
+        { key: "claseAzulReposado", price: "25" },
       ],
     },
     {
@@ -695,76 +681,6 @@ const sectionSubtitle = (section.sectionKey === "suppen" || section.sectionKey =
       .filter(section => section.items.length > 0);
   }, [searchTerm, selectedCategory, menuSections]);
 
-  // Build flat list of translated items from a menu structure (array of { sectionKey, itemKeys })
-  const buildTranslatedItems = (
-    structure: Array<{ sectionKey: string; itemKeys: Array<{ key: string; price: string }> }>
-  ): SuggestionItem[] => {
-    return structure.flatMap((section) => {
-      const sectionTitle = t(language, `menu.sections.${section.sectionKey}.title`);
-      return section.itemKeys.map((item) => ({
-        name: t(language, `menu.sections.${section.sectionKey}.items.${item.key}.name`),
-        description: t(language, `menu.sections.${section.sectionKey}.items.${item.key}.description`),
-        price: item.price,
-        category: sectionTitle,
-      }));
-    });
-  };
-
-  // Get random suggestion: 1 food + 1 drink. 06:00–12:00 German time = Breakfast & Brunch only; after 12 = both menus.
-  const getRandomDish = () => {
-    const hour = getGermanHour();
-    const isBreakfastTime = hour >= 6 && hour < 12;
-
-    const breakfastFoodSections = BREAKFAST_MENU_STRUCTURE.filter(
-      (s) => !DRINK_SECTION_KEYS.includes(s.sectionKey)
-    );
-    const breakfastDrinkSections = BREAKFAST_MENU_STRUCTURE.filter((s) =>
-      DRINK_SECTION_KEYS.includes(s.sectionKey)
-    );
-    const speisenFoodSections = SPEISEN_GETRAENKE_MENU_STRUCTURE.filter(
-      (s) => !DRINK_SECTION_KEYS.includes(s.sectionKey)
-    );
-    const speisenDrinkSections = SPEISEN_GETRAENKE_MENU_STRUCTURE.filter((s) =>
-      DRINK_SECTION_KEYS.includes(s.sectionKey)
-    );
-
-    const foodStructure = isBreakfastTime
-      ? breakfastFoodSections
-      : [...breakfastFoodSections, ...speisenFoodSections];
-    const drinkStructure = isBreakfastTime
-      ? breakfastDrinkSections
-      : (() => {
-          const merged = new Map<string, { sectionKey: string; itemKeys: Array<{ key: string; price: string }> }>();
-          for (const section of [...breakfastDrinkSections, ...speisenDrinkSections]) {
-            const existing = merged.get(section.sectionKey);
-            if (existing) {
-              const existingKeys = new Set(existing.itemKeys.map((i) => i.key));
-              for (const item of section.itemKeys) {
-                if (!existingKeys.has(item.key)) {
-                  existing.itemKeys.push(item);
-                  existingKeys.add(item.key);
-                }
-              }
-            } else {
-              merged.set(section.sectionKey, { sectionKey: section.sectionKey, itemKeys: [...section.itemKeys] });
-            }
-          }
-          return Array.from(merged.values());
-        })();
-
-    const foodItems = buildTranslatedItems(foodStructure);
-    const drinkItems = buildTranslatedItems(drinkStructure);
-    if (foodItems.length === 0 || drinkItems.length === 0) {
-      setRandomSuggestion(null);
-      setIsDialogOpen(true);
-      return;
-    }
-    const food = foodItems[Math.floor(Math.random() * foodItems.length)];
-    const drink = drinkItems[Math.floor(Math.random() * drinkItems.length)];
-    setRandomSuggestion({ food, drink });
-    setIsDialogOpen(true);
-  };
-
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       <Navigation />
@@ -902,16 +818,6 @@ const sectionSubtitle = (section.sectionKey === "suppen" || section.sectionKey =
                 className="pl-10 bg-background min-h-[44px] sm:min-h-[40px] text-base sm:text-sm"
               />
             </div>
-
-            {/* Random Dish Button */}
-            <Button
-              onClick={getRandomDish}
-              size="lg"
-              className="bg-accent hover:bg-accent/90 text-accent-foreground font-sans tracking-wide group w-full md:w-auto md:self-center min-h-[48px] touch-manipulation"
-            >
-              <Sparkles className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform shrink-0" />
-              {t(language, "menu.surprise")}
-            </Button>
           </div>
 
           {/* Category Filter */}
@@ -1117,64 +1023,6 @@ const sectionSubtitle = (section.sectionKey === "suppen" || section.sectionKey =
           </p>
         </div>
       </section>
-
-      {/* Random Dish Dialog */}
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="sm:max-w-md max-h-[90vh] flex flex-col p-4 sm:p-6">
-          <DialogHeader className="shrink-0">
-            <DialogTitle className="font-serif text-2xl sm:text-3xl flex items-center gap-2">
-              <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-accent shrink-0" />
-              {t(language, "menu.randomDishTitle")}
-            </DialogTitle>
-            <DialogDescription className="text-muted-foreground text-sm">
-              {t(language, "menu.randomDishDescription")}
-            </DialogDescription>
-          </DialogHeader>
-          {randomSuggestion && (
-            <div className="space-y-5 pt-4 overflow-y-auto min-h-0 -mx-1 px-1">
-              <div className="space-y-3">
-                <div className="text-xs uppercase tracking-wider text-accent font-semibold">
-                  {t(language, "menu.randomDishCategory")}: {randomSuggestion.food.category}
-                </div>
-                <h3 className="font-serif text-lg sm:text-xl text-foreground break-words">
-                  {randomSuggestion.food.name}
-                </h3>
-                {randomSuggestion.food.description && (
-                  <p className="text-muted-foreground text-sm leading-relaxed">
-                    {randomSuggestion.food.description}
-                  </p>
-                )}
-                <div className="font-sans font-semibold text-foreground">
-                  €{randomSuggestion.food.price}
-                </div>
-              </div>
-              <div className="border-t border-border pt-4 space-y-3">
-                <div className="text-xs uppercase tracking-wider text-accent font-semibold">
-                  {t(language, "menu.randomDishDrink")}: {randomSuggestion.drink.category}
-                </div>
-                <h3 className="font-serif text-lg sm:text-xl text-foreground break-words">
-                  {randomSuggestion.drink.name}
-                </h3>
-                {randomSuggestion.drink.description && (
-                  <p className="text-muted-foreground text-sm leading-relaxed">
-                    {randomSuggestion.drink.description}
-                  </p>
-                )}
-                <div className="font-sans font-semibold text-foreground">
-                  €{randomSuggestion.drink.price}
-                </div>
-              </div>
-              <Button
-                onClick={getRandomDish}
-                variant="outline"
-                className="w-full mt-4 min-h-[44px] touch-manipulation shrink-0"
-              >
-                {t(language, "menu.anotherSuggestion")}
-              </Button>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
 
       {/* CTA Section */}
       <CTASection />

@@ -32,7 +32,7 @@ const Footer = () => {
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="h-5 w-5 flex-shrink-0" />
-                <p>06920019010</p>
+                <p>069 200 190 10</p>
               </div>
               <a
               href="https://www.instagram.com/cafelibretto/"
@@ -78,7 +78,7 @@ const Footer = () => {
             </Link>
           </div>
           <p className="font-sans text-sm opacity-75">
-            © {new Date().getFullYear()} Libretto Cafe Restaurant Tagesbar. {t(language, "footer.rights")}
+            © {new Date().getFullYear()} Café Libretto. {t(language, "footer.rights")}
           </p>
           <p className="font-sans text-xs opacity-60">
             {t(language, "footer.developedBy")}{" "}

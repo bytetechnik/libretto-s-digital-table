@@ -49,7 +49,7 @@ const Contact = () => {
                     href="tel:+496920019010"
                     className="font-sans text-muted-foreground hover:text-primary transition-colors"
                   >
-                    06920019010
+                    069 200 190 10
                   </a>
                 </div>
               </div>
@@ -63,10 +63,10 @@ const Contact = () => {
                 <div>
                   <h3 className="font-serif text-xl text-foreground mb-2">{t(language, "contact.email")}</h3>
                   <a
-                    href="mailto:info@libretto.de"
+                    href="mailto:info@cafe-libretto.de"
                     className="font-sans text-muted-foreground hover:text-primary transition-colors"
                   >
-                    info@libretto.de
+                    info@cafe-libretto.de
                   </a>
                 </div>
               </div>

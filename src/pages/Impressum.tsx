@@ -18,17 +18,30 @@ const Impressum = () => {
             <div>
               <h2 className="font-serif text-2xl mb-4">{t(language, "impressum.company")}</h2>
               <p>{t(language, "impressum.companyName")}</p>
+              <p>{t(language, "impressum.companySubline")}</p>
               <p>{t(language, "impressum.address")}</p>
               <p>{t(language, "impressum.city")}</p>
             </div>
             <div>
               <h2 className="font-serif text-2xl mb-4">{t(language, "impressum.contact")}</h2>
-              <p>{t(language, "impressum.phone")}</p>
-              <p>{t(language, "impressum.email")}</p>
+              <p>
+                <a href="tel:06920019010" className="text-foreground hover:text-primary underline underline-offset-2 transition-colors">
+                  {t(language, "impressum.phone")}
+                </a>
+              </p>
+              <p>
+                <a href="mailto:info@cafe-libretto.de" className="text-foreground hover:text-primary underline underline-offset-2 transition-colors">
+                  {t(language, "impressum.email")}
+                </a>
+              </p>
             </div>
             <div>
               <h2 className="font-serif text-2xl mb-4">{t(language, "impressum.responsible")}</h2>
               <p>{t(language, "impressum.responsibleText")}</p>
+            </div>
+            <div>
+              <p>{t(language, "impressum.owner")}</p>
+              <p>{t(language, "impressum.taxNumber")}</p>
             </div>
           </div>
         </div>
