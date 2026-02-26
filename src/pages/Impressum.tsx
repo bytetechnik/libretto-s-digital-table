@@ -18,7 +18,7 @@ const Impressum = () => {
             <div>
               <h2 className="font-serif text-2xl mb-4">{t(language, "impressum.company")}</h2>
               <p>{t(language, "impressum.companyName")}</p>
-              <p>{t(language, "impressum.companySubline")}</p>
+              {t(language, "impressum.companySubline") && <p>{t(language, "impressum.companySubline")}</p>}
               <p>{t(language, "impressum.address")}</p>
               <p>{t(language, "impressum.city")}</p>
             </div>

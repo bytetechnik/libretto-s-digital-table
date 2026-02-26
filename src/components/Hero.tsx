@@ -53,13 +53,13 @@ const Hero = () => {
         style={{ transform: contentTransform }}
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-center w-full max-w-2xl md:max-w-none lg:max-w-none">
-          {/* Logo - mobile & tablet only (hidden on desktop lg+) */}
-          <div className="flex justify-center md:justify-start order-1">
-            <div className="animate-fade-in stagger-2 lg:hidden">
+          {/* Logo - visible on all screen sizes, positioned further left on desktop */}
+          <div className="flex justify-center md:justify-start order-1 md:-ml-10 lg:-ml-16">
+            <div className="animate-fade-in stagger-2">
               <img 
                 src={logoGreen} 
                 alt="Libretto Logo" 
-                className="max-w-full h-auto max-h-48 sm:max-h-56 md:max-h-64 w-auto animate-fade-in"
+                className="max-w-full h-auto max-h-24 sm:max-h-28 md:max-h-32 lg:max-h-36 w-auto animate-fade-in"
               />
             </div>
           </div>
