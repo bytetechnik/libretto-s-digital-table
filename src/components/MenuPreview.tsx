@@ -23,7 +23,7 @@ const MenuPreview = () => {
       titleKey: "menu.menuPartSpeisen",
       subtitleKey: "menu.menuPartSpeisenSubtitle",
       Icon: UtensilsCrossed,
-      to: "/menu",
+      to: "/menu?part=speisen",
     },
   ];
 

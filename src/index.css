@@ -177,3 +177,40 @@ All colors MUST be HSL.
     animation: gradient-shift 8s ease-in-out infinite;
   }
 }
+
+.pdf-menu-scroller {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  touch-action: pan-x pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.pdf-menu-scroller--paged {
+  scroll-snap-type: y mandatory;
+}
+
+.pdf-menu-scroller--scroll {
+  scrollbar-gutter: stable;
+}
+
+.pdf-menu-scroller--zoomed {
+  scroll-snap-type: none;
+}
+
+.pdf-menu-page {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.pdf-menu-scroller .react-pdf__Page {
+  position: relative;
+  width: 100% !important;
+}
+
+.pdf-menu-scroller .react-pdf__Page canvas {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  pointer-events: none;
+}
